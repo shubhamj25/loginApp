@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="standard">12sp</dimen>
+    <dimen name="title">30sp</dimen>
+    <dimen name="small">15sp</dimen>
+    <dimen name="vsmall">6sp</dimen>
+    <dimen name="buttonText">18sp</dimen>
+    <dimen name="subTitle">20sp</dimen>
+    <dimen name="subPara">16sp</dimen>
+</resources>

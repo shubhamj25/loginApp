@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextFieldStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/happy_monkey</item>
+        <item name="android:layout_margin">@dimen/standard</item>
+        <item name="android:background">@drawable/shape</item>
+    </style>
+    <style name="TextViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="TextFieldSmall">
+        <item name="android:fontFamily">@font/happy_monkey</item>
+        <item name="android:background">@drawable/shape</item>
+    </style>
+    <style name="TextFieldInlineError">
+        <item name="android:fontFamily">@font/happy_monkey</item>
+        <item name="android:paddingLeft">@dimen/standard</item>
+    </style>
+</resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/standard"
+    android:layout_height="match_parent">
+    <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/happy_monkey"
+            android:text="@string/hello"
+            android:textSize="@dimen/subPara"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.086"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.056" />
+    <TextView
+        android:layout_marginVertical="@dimen/vsmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/buttonText"
+        android:fontFamily="@font/happy_monkey"
+        android:textStyle="bold"
+        android:text="@string/all_users"
+        />
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/vsmall"
+        android:id="@+id/userListProgressBar"
+        android:layout_margin="@dimen/subTitle"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/userList"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+    />
+</LinearLayout>

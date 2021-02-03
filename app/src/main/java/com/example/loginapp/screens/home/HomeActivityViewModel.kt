@@ -9,5 +9,5 @@ import com.example.loginapp.database.LoginEntity
 
 class HomeActivityViewModel(dataSource: LoginDatabaseDao, application: Application) : ViewModel() {
     private val db= databaseBuilder(application, LoginDatabase::class.java, "login_app_database").build()
-    var users:LiveData<List<LoginEntity>> = db.loginDatabaseDao.getAllUsers()
+    var users:LiveData<MutableList<LoginEntity>> = db.loginDatabaseDao.getAllUsers()
 }

@@ -26,5 +26,5 @@ interface LoginDatabaseDao{
     fun clearDatabase()
 
     @Query("SELECT * FROM registered_users_table")
-    fun getAllUsers(): LiveData<List<LoginEntity>>
+    fun getAllUsers(): LiveData<MutableList<LoginEntity>>
 }

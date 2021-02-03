@@ -53,4 +53,5 @@
     <string name="alreadyRegisteredEntryFound">We found an already existing Registration on this email.\nKindly register using another email :(</string>
     <string name="clearDB">Clear Database</string>
     <string name="logout">Logout</string>
+    <string name="deleteRecord">Delete</string>
 </resources>

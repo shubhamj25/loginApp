@@ -23,7 +23,7 @@ class HomeActivity: MainActivity() {
         val viewModel= ViewModelProviders.of(this, viewModelFactory).get(HomeActivityViewModel::class.java)
 
         viewModel.users.observe(this, { newList ->
-            userList.adapter = RecyclerViewAdaptor(newList)
+            userList.adapter = RecyclerViewAdaptor(newList,this.application)
             userList.visibility = View.VISIBLE
             userListProgressBar.visibility = View.GONE
         })

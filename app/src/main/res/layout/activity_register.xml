@@ -318,7 +318,7 @@
         <ImageView
             android:id="@+id/registerBackground"
             android:layout_width="match_parent"
-            android:layout_height="250sp"
+            android:layout_height="300sp"
             android:src="@mipmap/registration_foreground"
             android:contentDescription="@string/createAccount" />
     </LinearLayout>

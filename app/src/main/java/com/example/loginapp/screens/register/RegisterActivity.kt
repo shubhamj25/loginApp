@@ -112,64 +112,77 @@ class RegisterActivity:BaseActivity(){
         customerTypeDropdown.setAdapter(adapter)
         customerTypeDropdown.setOnItemClickListener { _,_, position,_ ->
             when(itemList[position]) {
-                getString(R.string.customerType_commercial) -> commercialViewConstraints()
-                getString(R.string.customerType_residential) -> residentialViewConstraints()
+                getString(R.string.customerType_commercial) -> viewConstraints(getString(R.string.customerType_commercial))
+                getString(R.string.customerType_residential) -> viewConstraints(getString(R.string.customerType_residential))
                 else ->afterCustomerTypeSelected.visibility=View.GONE
             }
         }
     }
 
-    private fun residentialViewConstraints() {
-        businessNameLayout.visibility=View.GONE
-        cin_registerLayout.visibility=View.GONE
-        firstNameLayout.visibility=View.VISIBLE
-        lastNameLayout.visibility=View.VISIBLE
-        registerBackground.visibility=View.GONE
-        beforeCustomerTypeSelection.visibility=View.GONE
-        afterCustomerTypeSelected.visibility=View.VISIBLE
-        registerButton.setOnClickListener {
-            if(isResidentialFieldValidated(firstName,lastName,email_register,phone,password_register,confirmPassword)){
-                uiScope.launch {
-                    insert(db,firstName.text.toString(),lastName.text.toString(),"",email_register.text.toString(),"",
-                            phone.text.toString(),password_register.text.toString(),"Residential")
-                }
-                showDialog({ _, _ -> this.finish() },
-                        { dialog, _ -> dialog.cancel() },
-                        R.string.registrationDialogTitle,
-                        R.string.residentialRegistrationSuccessful,
-                        R.string.dialogPositive,R.string.dialogNegative)?.show()
-            }
+    private fun viewConstraints(customerType: String) {
+        if(customerType==getString(R.string.customerType_residential)){
+            businessNameLayout.visibility=View.GONE
+            cin_registerLayout.visibility=View.GONE
+            firstNameLayout.visibility=View.VISIBLE
+            lastNameLayout.visibility=View.VISIBLE
+            registerBackground.visibility=View.GONE
+            beforeCustomerTypeSelection.visibility=View.GONE
+            afterCustomerTypeSelected.visibility=View.VISIBLE
         }
-    }
-
-    private fun commercialViewConstraints() {
-        businessNameLayout.visibility=View.VISIBLE
-        cin_registerLayout.visibility=View.VISIBLE
-        firstNameLayout.visibility=View.GONE
-        lastNameLayout.visibility=View.GONE
-        registerBackground.visibility=View.GONE
-        beforeCustomerTypeSelection.visibility=View.GONE
-        afterCustomerTypeSelected.visibility=View.VISIBLE
+        else{
+            businessNameLayout.visibility=View.VISIBLE
+            cin_registerLayout.visibility=View.VISIBLE
+            firstNameLayout.visibility=View.GONE
+            lastNameLayout.visibility=View.GONE
+            registerBackground.visibility=View.GONE
+            beforeCustomerTypeSelection.visibility=View.GONE
+            afterCustomerTypeSelected.visibility=View.VISIBLE
+        }
         registerButton.setOnClickListener {
-            if(isCommercialFieldValidated(businessName,email_register,cin_register,phone,password_register,confirmPassword)){
-                uiScope.launch {
-                    if(checkBeforeRegister(email_register.text.toString())!=null){
-                        showDialog({ dialog, _ -> dialog.cancel() },
-                                R.string.registrationDialogTitle,
-                                R.string.alreadyRegisteredEntryFound,
-                                R.string.dialogPositive)?.show()
-                    }
-                    else{
-                        insert(db,"","",businessName.text.toString(),email_register.text.toString(),cin_register.text.toString(),
-                                phone.text.toString(),password_register.text.toString(),"Commercial")
-                        showDialog({ _, _ -> this@RegisterActivity.finish() },
-                                { dialog, _ -> dialog.cancel() },
-                                R.string.registrationDialogTitle,
-                                R.string.commercialRegistrationSuccessful,
-                                R.string.dialogPositive,R.string.dialogNegative)?.show()
+            when(customerType){
+                getString(R.string.customerType_residential) ->{
+                    if(isResidentialFieldValidated(firstName,lastName,email_register,phone,password_register,confirmPassword)){
+                        uiScope.launch {
+                            if (checkBeforeRegister(email_register.text.toString()) != null) {
+                                showDialog({ dialog, _ -> dialog.cancel() },
+                                        R.string.registrationDialogTitle,
+                                        R.string.alreadyRegisteredEntryFound,
+                                        R.string.dialogPositive)?.show()
+                            } else {
+                                insert(db, firstName.text.toString(), lastName.text.toString(), "", email_register.text.toString(), "",
+                                        phone.text.toString(), password_register.text.toString(), "Residential")
+
+                                showDialog({ _, _ -> this@RegisterActivity.finish() },
+                                        { dialog, _ -> dialog.cancel() },
+                                        R.string.registrationDialogTitle,
+                                        R.string.residentialRegistrationSuccessful,
+                                        R.string.dialogPositive, R.string.dialogNegative)?.show()
+                            }
+                        }
                     }
                 }
+                getString(R.string.customerType_commercial)->{
+                    if(isCommercialFieldValidated(businessName,email_register,cin_register,phone,password_register,confirmPassword)){
+                        uiScope.launch {
+                            if(checkBeforeRegister(email_register.text.toString())!=null){
+                                showDialog({ dialog, _ -> dialog.cancel() },
+                                        R.string.registrationDialogTitle,
+                                        R.string.alreadyRegisteredEntryFound,
+                                        R.string.dialogPositive)?.show()
+                            }
+                            else{
+                                insert(db,"","",businessName.text.toString(),email_register.text.toString(),cin_register.text.toString(),
+                                        phone.text.toString(),password_register.text.toString(),"Commercial")
+                                showDialog({ _, _ -> this@RegisterActivity.finish() },
+                                        { dialog, _ -> dialog.cancel() },
+                                        R.string.registrationDialogTitle,
+                                        R.string.commercialRegistrationSuccessful,
+                                        R.string.dialogPositive,R.string.dialogNegative)?.show()
+                            }
+                        }
 
+                    }
+                }
             }
         }
     }

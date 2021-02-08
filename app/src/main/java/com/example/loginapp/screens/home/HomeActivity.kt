@@ -14,10 +14,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeActivity: BaseActivity() {
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModelJob.cancel()
-    }
     private lateinit var users: LiveData<MutableList<LoginEntity>>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +38,7 @@ class HomeActivity: BaseActivity() {
         val msg="$welcomeMessage,\n${bundle?.getBundle(getString(R.string.bundleKey))?.getString(getString(R.string.bundleArgEmail), getString(R.string.defaultUserName))}\nHappy Learning :)"
         tv1.text=msg
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.home_menu, menu)
@@ -65,5 +62,10 @@ class HomeActivity: BaseActivity() {
         withContext(Dispatchers.IO){
             db.loginDatabaseDao.clearDatabase()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModelJob.cancel()
     }
 }

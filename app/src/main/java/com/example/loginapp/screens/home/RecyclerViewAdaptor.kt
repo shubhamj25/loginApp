@@ -53,7 +53,7 @@ class RecyclerViewAdaptor(private val userList: MutableList<LoginEntity>,private
             }
             1->{
                 val holder2=ToDoItemViewHolder2(holder.itemView)
-                holder2.customerTypeCommercial.setBackgroundColor(Color.parseColor("#1E90FF"))
+                holder2.customerTypeCommercial.setBackgroundColor(Color.parseColor(application.getString(R.string.windowsBlue)))
                 holder2.bName.text=user.businessName
                 holder2.cinNumber.text=user.cin
                 holder2.emailCommercial.text=user.email

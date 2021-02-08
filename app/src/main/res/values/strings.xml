@@ -61,5 +61,6 @@
     <string name="defaultUserName">User</string>
     <string name="myPrefs">loginPrefs</string>
     <string name="sharedPrefsEmail">email</string>
+    <string name="windowsBlue">#1E90FF</string>
     <string name="sharedPrefsPassword">password</string>
 </resources>

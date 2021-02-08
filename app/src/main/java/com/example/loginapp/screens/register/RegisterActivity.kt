@@ -20,7 +20,6 @@ class RegisterActivity:BaseActivity(){
         setContentView(R.layout.activity_register)
         setView()
     }
-
     private fun isResidentialFieldValidated(firstName:TextInputEditText, lastName:TextInputEditText, email:TextInputEditText, phone:TextInputEditText, password:TextInputEditText, confirmPassword:TextInputEditText): Boolean {
         val countOfEmptyFields=countEmptyFields(arrayListOf(firstName.text.toString(),lastName.text.toString(),
                 email.text.toString(),phone.text.toString(),password.text.toString(),confirmPassword.text.toString()))
@@ -120,24 +119,14 @@ class RegisterActivity:BaseActivity(){
     }
 
     private fun viewConstraints(customerType: String) {
-        if(customerType==getString(R.string.customerType_residential)){
-            businessNameLayout.visibility=View.GONE
-            cin_registerLayout.visibility=View.GONE
-            firstNameLayout.visibility=View.VISIBLE
-            lastNameLayout.visibility=View.VISIBLE
-            registerBackground.visibility=View.GONE
-            beforeCustomerTypeSelection.visibility=View.GONE
-            afterCustomerTypeSelected.visibility=View.VISIBLE
-        }
-        else{
-            businessNameLayout.visibility=View.VISIBLE
-            cin_registerLayout.visibility=View.VISIBLE
-            firstNameLayout.visibility=View.GONE
-            lastNameLayout.visibility=View.GONE
-            registerBackground.visibility=View.GONE
-            beforeCustomerTypeSelection.visibility=View.GONE
-            afterCustomerTypeSelected.visibility=View.VISIBLE
-        }
+        val isAResidentialCustomer:Boolean= customerType == getString(R.string.customerType_residential)
+        businessNameLayout.visibility=if(isAResidentialCustomer) View.GONE else View.VISIBLE
+        cin_registerLayout.visibility=if(isAResidentialCustomer) View.GONE else View.VISIBLE
+        firstNameLayout.visibility=if(isAResidentialCustomer) View.VISIBLE else View.GONE
+        lastNameLayout.visibility=if(isAResidentialCustomer) View.VISIBLE else View.GONE
+        registerBackground.visibility=View.GONE
+        beforeCustomerTypeSelection.visibility=View.GONE
+        afterCustomerTypeSelected.visibility=View.VISIBLE
         registerButton.setOnClickListener {
             when(customerType){
                 getString(R.string.customerType_residential) ->{
@@ -150,7 +139,7 @@ class RegisterActivity:BaseActivity(){
                                         R.string.dialogPositive)?.show()
                             } else {
                                 insert(db, firstName.text.toString(), lastName.text.toString(), "", email_register.text.toString(), "",
-                                        phone.text.toString(), password_register.text.toString(), "Residential")
+                                        phone.text.toString(), password_register.text.toString(), getString(R.string.customerType_residential))
 
                                 showDialog({ _, _ -> this@RegisterActivity.finish() },
                                         { dialog, _ -> dialog.cancel() },
@@ -172,7 +161,7 @@ class RegisterActivity:BaseActivity(){
                             }
                             else{
                                 insert(db,"","",businessName.text.toString(),email_register.text.toString(),cin_register.text.toString(),
-                                        phone.text.toString(),password_register.text.toString(),"Commercial")
+                                        phone.text.toString(),password_register.text.toString(),getString(R.string.customerType_commercial))
                                 showDialog({ _, _ -> this@RegisterActivity.finish() },
                                         { dialog, _ -> dialog.cancel() },
                                         R.string.registrationDialogTitle,

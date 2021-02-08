@@ -16,6 +16,7 @@ open class MainActivity : BaseActivity() {
         setListenerOnWidgets()
         prepopulate(sharedPreferences)
     }
+
     private fun setListenerOnWidgets() {
         forgotPassword?.setOnClickListener{
             startActivity(Intent(this@MainActivity, ForgotPasswordActivity::class.java))

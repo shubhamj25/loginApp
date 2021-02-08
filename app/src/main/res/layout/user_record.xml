@@ -26,14 +26,14 @@
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:id="@+id/fName"
+                        android:id="@+id/fName_residential"
                         android:fontFamily="@font/happy_monkey"
                         android:textSize="@dimen/buttonText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                     </TextView>
                     <TextView
-                        android:id="@+id/lname"
+                        android:id="@+id/lname_residential"
                         android:layout_marginLeft="@dimen/vsmall"
                         android:fontFamily="@font/happy_monkey"
                         android:textSize="@dimen/buttonText"
@@ -41,20 +41,13 @@
                         android:layout_height="wrap_content">
                     </TextView>
                 </LinearLayout>
-                <TextView
-                    android:id="@+id/businessName_commercial"
-                    android:fontFamily="@font/happy_monkey"
-                    android:textSize="@dimen/buttonText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                </TextView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/standard"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/e_mail"
+                    android:id="@+id/e_mail_residential"
                     android:layout_marginTop="@dimen/vsmall"
                     android:fontFamily="@font/happy_monkey"
                     android:textSize="@dimen/subPara"
@@ -62,14 +55,7 @@
                     android:layout_height="wrap_content">
                 </TextView>
                 <TextView
-                    android:id="@+id/cin_commercial"
-                    android:fontFamily="@font/happy_monkey"
-                    android:textSize="@dimen/subPara"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                </TextView>
-                <TextView
-                    android:id="@+id/mobile"
+                    android:id="@+id/mobile_residential"
                     android:fontFamily="@font/happy_monkey"
                     android:textSize="@dimen/subPara"
                     android:layout_width="wrap_content"
@@ -79,7 +65,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:layout_width="wrap_content"
                     android:layout_gravity="start"
-                    android:id="@+id/deleteRecord"
+                    android:id="@+id/deleteRecord_residential"
                     android:backgroundTint="@color/deepRed"
                     android:fontFamily="@font/happy_monkey"
                     android:textSize="@dimen/standard"
@@ -93,7 +79,7 @@
             <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_gravity="end"
-                android:id="@+id/customerTypeLabel"
+                android:id="@+id/customerTypeLabel_residential"
                 android:fontFamily="@font/happy_monkey"
                 android:textSize="@dimen/standard"
                 android:textColor="@color/white"

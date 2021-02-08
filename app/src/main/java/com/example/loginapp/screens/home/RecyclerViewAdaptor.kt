@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.loginapp.R
@@ -15,63 +16,83 @@ import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.*
 
 class RecyclerViewAdaptor(private val userList: MutableList<LoginEntity>,private val application: Application):
-    RecyclerView.Adapter<RecyclerViewAdaptor.ToDoItemViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     lateinit var db : LoginDatabase
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToDoItemViewHolder {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         db= getDatabaseInstance(application)
-        val view=LayoutInflater.from(parent.context).inflate(R.layout.user_record,
-            parent, false)
-        return ToDoItemViewHolder(view)
-    }
-    override fun onBindViewHolder(holder: ToDoItemViewHolder, position: Int) {
-        val user=userList[position]
-        setRecyclerItemView(user,holder)
+        return when (viewType) {
+            0 -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.user_record,
+                        parent, false)
+                ToDoItemViewHolder(view)
+            }
+            else -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.user_commercial_layout,
+                        parent, false)
+                ToDoItemViewHolder2(view)
+            }
+        }
     }
 
-    private fun setRecyclerItemView(user: LoginEntity, holder: ToDoItemViewHolder) {
-        if(user.firstName.isEmpty()){
-            holder.firstName.height=0
-        }
-        if(user.lastName.isEmpty()){
-            holder.lname.height=0
-        }
-        if(user.businessName.isEmpty()){
-            holder.businessName.height=0
-        }
-        if(user.cin.isEmpty()){
-            holder.cin.height=0
-        }
-        if(user.customerType == "Commercial"){
-            holder.customerType.setBackgroundColor(Color.parseColor("#1E90FF"))
-        }
-        else{
-            holder.customerType.setBackgroundColor(Color.GRAY)
-        }
-        holder.businessName.text=user.businessName
-        holder.cin.text=user.cin
-        holder.firstName.text=user.firstName
-        holder.lname.text=user.lastName
-        holder.email.text=user.email
-        holder.phone.text=user.phone
-        holder.customerType.text=user.customerType
-        holder.deleteUserRecord.findViewById<MaterialButton>(R.id.deleteRecord).setOnClickListener {
-            removeItem(holder.adapterPosition)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val user=userList[position]
+        when(holder.itemViewType){
+            0->{
+                val holder1=ToDoItemViewHolder(holder.itemView)
+                holder1.customerType.setBackgroundColor(Color.GRAY)
+                holder1.firstName.text=user.firstName
+                holder1.lname.text=user.lastName
+                holder1.email.text=user.email
+                holder1.phone.text=user.phone
+                holder1.customerType.text=user.customerType
+                holder1.deleteUserRecord.setOnClickListener {
+                    removeItem(holder.adapterPosition)
+                }
+            }
+            1->{
+                val holder2=ToDoItemViewHolder2(holder.itemView)
+                holder2.customerTypeCommercial.setBackgroundColor(Color.parseColor("#1E90FF"))
+                holder2.bName.text=user.businessName
+                holder2.cinNumber.text=user.cin
+                holder2.emailCommercial.text=user.email
+                holder2.phoneCommercial.text=user.phone
+                holder2.deleteUserRecordCommercial.setOnClickListener {
+                    removeItem(holder.adapterPosition)
+                }
+            }
         }
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return when(userList[position].customerType){
+            application.getString(R.string.customerType_residential) -> 0
+            application.getString(R.string.customerType_commercial) -> 1
+            else -> -1
+        }
+    }
+
 
     override fun getItemCount(): Int {
         return userList.size
     }
 
     inner class ToDoItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val businessName:TextView= itemView.findViewById(R.id.businessName_commercial)
-        val cin:TextView=itemView.findViewById(R.id.cin_commercial)
-        val firstName: TextView = itemView.findViewById(R.id.fName)
-        val lname: TextView =itemView.findViewById(R.id.lname)
-        val email: TextView =itemView.findViewById(R.id.e_mail)
-        val phone: TextView =itemView.findViewById(R.id.mobile)
-        val customerType:MaterialButton=itemView.findViewById(R.id.customerTypeLabel)
-        val deleteUserRecord:MaterialButton=itemView.findViewById(R.id.deleteRecord)
+        val firstName: TextView = itemView.findViewById(R.id.fName_residential)
+        val lname: TextView =itemView.findViewById(R.id.lname_residential)
+        val email: TextView =itemView.findViewById(R.id.e_mail_residential)
+        val phone: TextView =itemView.findViewById(R.id.mobile_residential)
+        val customerType:MaterialButton=itemView.findViewById(R.id.customerTypeLabel_residential)
+        val deleteUserRecord:MaterialButton=itemView.findViewById(R.id.deleteRecord_residential)
+    }
+
+    inner class ToDoItemViewHolder2(itemView: View): RecyclerView.ViewHolder(itemView) {
+        val bName:TextView= itemView.findViewById(R.id.businessName_commercial)
+        val cinNumber:TextView=itemView.findViewById(R.id.cin_commercial)
+        val emailCommercial: TextView =itemView.findViewById(R.id.e_mail_commercial)
+        val phoneCommercial: TextView =itemView.findViewById(R.id.mobile_commercial)
+        val customerTypeCommercial:MaterialButton=itemView.findViewById(R.id.customerTypeLabel_commercial)
+        val deleteUserRecordCommercial:MaterialButton=itemView.findViewById(R.id.deleteRecord_commercial)
     }
 
     private fun removeItem(position: Int) {
@@ -88,4 +109,5 @@ class RecyclerViewAdaptor(private val userList: MutableList<LoginEntity>,private
             db.loginDatabaseDao.deleteById(id)
         }
     }
+
 }

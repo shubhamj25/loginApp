@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.example.loginapp.database.LoginDatabase
 import com.google.android.material.snackbar.Snackbar
@@ -20,6 +21,10 @@ var viewModelJob = Job()
 val uiScope = CoroutineScope(Dispatchers.Main +  viewModelJob)
 fun getSharedPreferenceInstance(application: Application):SharedPreferences{
     return application.getSharedPreferences(application.getString(R.string.myPrefs), Context.MODE_PRIVATE)
+}
+
+fun getLinearLayoutManager(application: Application): LinearLayoutManager {
+    return LinearLayoutManager(application, LinearLayoutManager.VERTICAL, false)
 }
 
 fun clearSharedPreferences(sharedPreferences: SharedPreferences){

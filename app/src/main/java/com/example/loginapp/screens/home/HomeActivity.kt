@@ -3,37 +3,45 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.loginapp.*
-import com.example.loginapp.database.LoginDatabase
+import androidx.lifecycle.LiveData
+import com.example.loginapp.BaseActivity
+import com.example.loginapp.R
+import com.example.loginapp.database.LoginEntity
+import com.example.loginapp.getLinearLayoutManager
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 class HomeActivity: BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         viewModelJob.cancel()
     }
+    private lateinit var users: LiveData<MutableList<LoginEntity>>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        val application = requireNotNull(this).application
-        val dataSource=LoginDatabase.getInstance(application).loginDatabaseDao
-        val viewModelFactory=HomeActivityViewModelFactory(dataSource, application)
-        val viewModel= ViewModelProviders.of(this, viewModelFactory).get(HomeActivityViewModel::class.java)
-        viewModel.users.observe(this, { newList ->
-            userList.adapter = RecyclerViewAdaptor(newList,this.application)
+        users=db.loginDatabaseDao.getAllUsers()
+        userList.layoutManager= getLinearLayoutManager(application)
+        setObservers()
+        setWelcomeString()
+    }
+
+    private fun setObservers(){
+        users.observe(this, { newList ->
+            userList.adapter = RecyclerViewAdaptor(newList,application)
             userList.visibility = View.VISIBLE
             userListProgressBar.visibility = View.GONE
         })
-        val layoutManager= LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        userList.layoutManager=layoutManager
+    }
+
+    private fun setWelcomeString(){
         val welcomeMessage:String=tv1.text.toString()
         val bundle=intent.extras
         val msg="$welcomeMessage,\n${bundle?.getBundle(getString(R.string.bundleKey))?.getString(getString(R.string.bundleArgEmail), getString(R.string.defaultUserName))}\nHappy Learning :)"
         tv1.text=msg
     }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.home_menu, menu)

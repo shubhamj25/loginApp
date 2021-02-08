@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.loginapp.R
@@ -13,17 +12,19 @@ import com.example.loginapp.database.LoginEntity
 import com.example.loginapp.getDatabaseInstance
 import com.example.loginapp.uiScope
 import com.google.android.material.button.MaterialButton
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RecyclerViewAdaptor(private val userList: MutableList<LoginEntity>,private val application: Application):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    lateinit var db : LoginDatabase
+    private lateinit var db : LoginDatabase
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         db= getDatabaseInstance(application)
         return when (viewType) {
             0 -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.user_record,
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.user_residential_layout,
                         parent, false)
                 ToDoItemViewHolder(view)
             }

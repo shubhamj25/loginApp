@@ -54,4 +54,12 @@
     <string name="clearDB">Clear Database</string>
     <string name="logout">Logout</string>
     <string name="deleteRecord">Delete</string>
+    <string name="error_password">Invalid or Empty Password</string>
+    <string name="databaseName">login_app_database</string>
+    <string name="bundleArgEmail">email</string>
+    <string name="bundleKey">args</string>
+    <string name="defaultUserName">User</string>
+    <string name="myPrefs">loginPrefs</string>
+    <string name="sharedPrefsEmail">email</string>
+    <string name="sharedPrefsPassword">password</string>
 </resources>

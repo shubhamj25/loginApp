@@ -6,8 +6,8 @@ import androidx.room.Room.databaseBuilder
 import com.example.loginapp.database.LoginDatabase
 import com.example.loginapp.database.LoginDatabaseDao
 import com.example.loginapp.database.LoginEntity
+import com.example.loginapp.getDatabaseInstance
 
 class HomeActivityViewModel(dataSource: LoginDatabaseDao, application: Application) : ViewModel() {
-    private val db= databaseBuilder(application, LoginDatabase::class.java, "login_app_database").build()
-    var users:LiveData<MutableList<LoginEntity>> = db.loginDatabaseDao.getAllUsers()
+    var users:LiveData<MutableList<LoginEntity>> = getDatabaseInstance(application).loginDatabaseDao.getAllUsers()
 }

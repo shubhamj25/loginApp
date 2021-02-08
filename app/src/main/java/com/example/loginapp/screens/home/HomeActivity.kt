@@ -5,15 +5,15 @@ import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.loginapp.MainActivity
-import com.example.loginapp.R
+import com.example.loginapp.*
 import com.example.loginapp.database.LoginDatabase
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.*
-
-
-@Suppress("DEPRECATION")
-class HomeActivity: MainActivity() {
+class HomeActivity: BaseActivity() {
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModelJob.cancel()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -21,7 +21,6 @@ class HomeActivity: MainActivity() {
         val dataSource=LoginDatabase.getInstance(application).loginDatabaseDao
         val viewModelFactory=HomeActivityViewModelFactory(dataSource, application)
         val viewModel= ViewModelProviders.of(this, viewModelFactory).get(HomeActivityViewModel::class.java)
-
         viewModel.users.observe(this, { newList ->
             userList.adapter = RecyclerViewAdaptor(newList,this.application)
             userList.visibility = View.VISIBLE
@@ -29,9 +28,9 @@ class HomeActivity: MainActivity() {
         })
         val layoutManager= LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         userList.layoutManager=layoutManager
-        val x:String=tv1.text.toString()
-        val a=intent.extras
-        val msg="$x,\n${a?.getBundle("args")?.getString("email", "User")}\nHappy Learning :)"
+        val welcomeMessage:String=tv1.text.toString()
+        val bundle=intent.extras
+        val msg="$welcomeMessage,\n${bundle?.getBundle(getString(R.string.bundleKey))?.getString(getString(R.string.bundleArgEmail), getString(R.string.defaultUserName))}\nHappy Learning :)"
         tv1.text=msg
     }
 
@@ -48,7 +47,6 @@ class HomeActivity: MainActivity() {
                 userList.adapter=null
             }
             R.id.logout-> {
-                clearSharedPreferences(sharedPreferences)
                 this.finish()
             }
         }

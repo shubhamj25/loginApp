@@ -18,6 +18,7 @@
         <activity android:name=".screens.home.HomeActivity"/>
         <activity android:name=".screens.forgotPassword.ForgotPasswordActivity"/>
         <activity android:name=".screens.register.RegisterActivity"/>
+        <activity android:name=".BaseActivity"/>
     </application>
 
 </manifest>

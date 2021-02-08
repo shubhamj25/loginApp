@@ -4,29 +4,31 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.example.loginapp.R
 import com.example.loginapp.database.LoginDatabase
 import com.example.loginapp.database.LoginEntity
+import com.example.loginapp.getDatabaseInstance
+import com.example.loginapp.uiScope
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.*
 
 class RecyclerViewAdaptor(private val userList: MutableList<LoginEntity>,private val application: Application):
     RecyclerView.Adapter<RecyclerViewAdaptor.ToDoItemViewHolder>() {
-    private var viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main +  viewModelJob)
     lateinit var db : LoginDatabase
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToDoItemViewHolder {
-        db= Room.databaseBuilder(this.application,LoginDatabase::class.java, "login_app_database").build()
+        db= getDatabaseInstance(application)
         val view=LayoutInflater.from(parent.context).inflate(R.layout.user_record,
             parent, false)
         return ToDoItemViewHolder(view)
     }
     override fun onBindViewHolder(holder: ToDoItemViewHolder, position: Int) {
         val user=userList[position]
+        setRecyclerItemView(user,holder)
+    }
+
+    private fun setRecyclerItemView(user: LoginEntity, holder: ToDoItemViewHolder) {
         if(user.firstName.isEmpty()){
             holder.firstName.height=0
         }

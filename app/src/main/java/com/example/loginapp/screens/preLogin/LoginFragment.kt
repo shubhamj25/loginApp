@@ -9,27 +9,28 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.viewpager.widget.ViewPager
 import com.example.loginapp.*
 import com.example.loginapp.database.LoginDatabase
 import com.example.loginapp.database.LoginEntity
 import com.example.loginapp.databinding.FragmentLoginBinding
 import com.example.loginapp.screens.home.HomeActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.*
 
-class LoginFragment : Fragment() {
+class LoginFragment(viewPager: ViewPager) : Fragment() {
     private lateinit var sharedPreferences:SharedPreferences
     private lateinit var db:LoginDatabase
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        uiScope= CoroutineScope(Dispatchers.Main +  Job())
-    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         sharedPreferences= getSharedPreferenceInstance(requireNotNull(this.activity).application)
         db= getDatabaseInstance(requireNotNull(this.activity).application)
         val binding:FragmentLoginBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_login, container, false)
         setListenerOnWidgets(binding)
+        binding.createAccount.text=getString(R.string.swipeToSignUp)
+        binding.createAccount.setOnClickListener { null }
+        binding.forgotPassword.setOnClickListener { null }
         return binding.root
     }
     private fun setListenerOnWidgets(binding: FragmentLoginBinding) {
@@ -42,11 +43,8 @@ class LoginFragment : Fragment() {
         binding.loginButton.setOnClickListener {
             val isAValidEmail:Boolean= email.text.toString().isAValidEmail()
             val isAValidPassword:Boolean =password.text.toString().isAValidPassword()
-            Log.i("FunctionEcec","Login Exucutesdcs svsdvsdv")
             if( isAValidEmail && isAValidPassword ){
-                Log.i("FunctionEcec","entered if condition")
                 uiScope.launch {
-                    Log.i("FunctionEcec","entered uiScope")
                     val foundMatch=checkBeforeLogin(email.text.toString(),password.text.toString())
                     if(foundMatch!=null){
                         val intent= Intent(requireActivity().application, HomeActivity::class.java)

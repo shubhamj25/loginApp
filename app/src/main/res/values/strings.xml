@@ -65,4 +65,5 @@
     <string name="sharedPrefsPassword">password</string>
     <string name="welcomeMessageSubtitle">Happy Learning :)</string>
     <string name="welcomeMessage">Hello,\n%1$s\n%2$s</string>
+    <string name="swipeToSignUp">Swipe left to sign Up</string>
 </resources>

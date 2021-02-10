@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import androidx.viewpager.widget.ViewPager
 import com.example.loginapp.database.LoginDatabase
+import com.example.loginapp.screens.ViewPagerAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -25,6 +27,7 @@ fun getSharedPreferenceInstance(application: Application):SharedPreferences{
 fun getLinearLayoutManager(application: Application): LinearLayoutManager {
     return LinearLayoutManager(application, LinearLayoutManager.VERTICAL, false)
 }
+
 
 fun clearSharedPreferences(sharedPreferences: SharedPreferences){
     sharedPreferences.edit().clear().apply()

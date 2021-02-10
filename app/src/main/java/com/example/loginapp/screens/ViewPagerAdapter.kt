@@ -8,11 +8,6 @@ internal class ViewPagerAdapter(manager: FragmentManager?) : FragmentPagerAdapte
     override fun getItem(position: Int): Fragment {
         return mFragmentList[position]
     }
-    fun clearFragment(position: Int)
-    {
-        mFragmentList.removeAt(position)
-        notifyDataSetChanged()
-    }
     override fun getCount(): Int {
         return mFragmentList.size
     }

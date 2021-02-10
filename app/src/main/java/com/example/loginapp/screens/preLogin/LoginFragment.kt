@@ -2,7 +2,6 @@ package com.example.loginapp.screens.preLogin
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +14,10 @@ import com.example.loginapp.database.LoginDatabase
 import com.example.loginapp.database.LoginEntity
 import com.example.loginapp.databinding.FragmentLoginBinding
 import com.example.loginapp.screens.home.HomeActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginFragment(viewPager: ViewPager) : Fragment() {
     private lateinit var sharedPreferences:SharedPreferences

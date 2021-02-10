@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.example.loginapp.database.LoginDatabase
@@ -16,9 +17,7 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-
-var viewModelJob = Job()
-val uiScope = CoroutineScope(Dispatchers.Main +  viewModelJob)
+var uiScope = CoroutineScope(Dispatchers.Main +  Job())
 fun getSharedPreferenceInstance(application: Application):SharedPreferences{
     return application.getSharedPreferences(application.getString(R.string.myPrefs), Context.MODE_PRIVATE)
 }
@@ -33,23 +32,14 @@ fun clearSharedPreferences(sharedPreferences: SharedPreferences){
 
 fun getDatabaseInstance(application: Application):LoginDatabase{
     return Room.databaseBuilder(application,
-            LoginDatabase::class.java,
-            application.resources.getString(R.string.databaseName)).build()
+        LoginDatabase::class.java,
+        application.resources.getString(R.string.databaseName)).build()
 
 }
 
 fun String.isAValidPassword(): Boolean {
     return length>=6
 }
-
-fun AppCompatActivity.setInLineEmptyError(textInputLayout: TextInputLayout, textInputEditText: TextInputEditText, errorMessage:Int){
-    if(textInputEditText.text.toString().isEmpty()) {
-        textInputLayout.error=getString(errorMessage)
-    }
-}
-
-
-
 
 fun String.isAValidCIN(): Boolean {
     return length==21
@@ -65,20 +55,20 @@ fun countEmptyFields(array: ArrayList<String>):Int{
     return count
 }
 
-fun AppCompatActivity.showDialog(positiveAction: DialogInterface.OnClickListener?=null,negativeAction:DialogInterface.OnClickListener, title:Int, message:Int, positiveButton:Int, negativeButton:Int): AlertDialog.Builder? {
+fun FragmentActivity.showDialog(positiveAction: DialogInterface.OnClickListener?=null,negativeAction:DialogInterface.OnClickListener, title:Int, message:Int, positiveButton:Int, negativeButton:Int): AlertDialog.Builder? {
     return AlertDialog.Builder(this).setMessage(getString(message)).setPositiveButton(
-            positiveButton, positiveAction).setNegativeButton(negativeButton,negativeAction)
-            .setTitle(getString(title))
+        positiveButton, positiveAction).setNegativeButton(negativeButton,negativeAction)
+        .setTitle(getString(title))
 }
 
-fun AppCompatActivity.showDialog(positiveAction: DialogInterface.OnClickListener?, title:Int, message:Int, positiveButton:Int): AlertDialog.Builder? {
+fun FragmentActivity.showDialog(positiveAction: DialogInterface.OnClickListener?, title:Int, message:Int, positiveButton:Int): AlertDialog.Builder? {
     return AlertDialog.Builder(this).setMessage(getString(message)).setPositiveButton(
         positiveButton, positiveAction).setTitle(getString(title))
 }
 
-fun AppCompatActivity.showErrorSnackBar(view: View, message: Int): Snackbar {
+fun Application.showErrorSnackBar(view: View, message: Int): Snackbar {
     return Snackbar.make(view,getString(message), Snackbar.LENGTH_LONG)
-            .setBackgroundTint(Color.parseColor(getString(R.string.deepRed))).setTextColor(Color.WHITE)
+        .setBackgroundTint(Color.parseColor(getString(R.string.deepRed))).setTextColor(Color.WHITE)
 }
 
 fun String.isAValidPhoneNumber(): Boolean {
@@ -88,4 +78,10 @@ fun String.isAValidPhoneNumber(): Boolean {
 fun String.isAValidEmail(): Boolean {
     val regex= "^((([!#\$%&'*+\\-/=?^_`{|}~\\w])|([!#\$%&'*+\\-/=?^_`{|}~\\w][!#\$%&'*+\\-/=?^_`{|}~.\\w]*[!#\$%&'*+\\-/=?^_`{|}~\\w]))[@]\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*)\$"
     return matches(regex.toRegex())
+}
+
+fun Application.setInLineEmptyError(textInputLayout: TextInputLayout, textInputEditText: TextInputEditText, errorMessage:Int){
+    if(textInputEditText.text.toString().isEmpty()) {
+        textInputLayout.error=getString(errorMessage)
+    }
 }

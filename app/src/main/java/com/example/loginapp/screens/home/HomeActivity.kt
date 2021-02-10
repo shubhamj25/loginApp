@@ -6,6 +6,7 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import com.example.loginapp.BaseActivity
 import com.example.loginapp.R
+import com.example.loginapp.clearSharedPreferences
 import com.example.loginapp.database.LoginEntity
 import com.example.loginapp.getLinearLayoutManager
 import kotlinx.android.synthetic.main.activity_home.*
@@ -33,10 +34,10 @@ class HomeActivity: BaseActivity() {
     }
 
     private fun setWelcomeString(){
-        val welcomeMessage:String=tv1.text.toString()
         val bundle=intent.extras
-        val msg="$welcomeMessage,\n${bundle?.getBundle(getString(R.string.bundleKey))?.getString(getString(R.string.bundleArgEmail), getString(R.string.defaultUserName))}\nHappy Learning :)"
-        tv1.text=msg
+        val userEmail=bundle?.getBundle(getString(R.string.bundleKey))?.getString(getString(R.string.bundleArgEmail), getString(R.string.defaultUserName))
+        val message=getString(R.string.welcomeMessage,userEmail,getString(R.string.welcomeMessageSubtitle))
+        tv1.text=message
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

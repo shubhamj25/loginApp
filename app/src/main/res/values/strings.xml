@@ -7,7 +7,7 @@
     <string name="forgotPass">Forgot Password ?</string>
     <string name="forgotPassActivitySubHeading">This activity would be used to reset the password !</string>
     <string name="createAccount">Create Account</string>
-    <string name="createAccountSubtitle">Do not have an account ?<br/> Register Here</string>
+    <string name="createAccountSubtitle">Do not have an account ?<br /> Register Here</string>
     <string name="phone">Phone</string>
     <string name="registerButton">Register</string>
     <string name="createAccountButton">Create Account / SignUp</string>
@@ -63,4 +63,6 @@
     <string name="sharedPrefsEmail">email</string>
     <string name="windowsBlue">#1E90FF</string>
     <string name="sharedPrefsPassword">password</string>
+    <string name="welcomeMessageSubtitle">Happy Learning :)</string>
+    <string name="welcomeMessage">Hello,\n%1$s\n%2$s</string>
 </resources>

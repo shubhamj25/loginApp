@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@style/Theme.LoginApp"
     android:id="@+id/dropDownItem"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
     android:ellipsize="end"
     android:maxLines="1"
+    android:textSize="@dimen/subPara"
     android:fontFamily="@font/happy_monkey"
     android:textAppearance="?attr/textAppearanceSubtitle1" />

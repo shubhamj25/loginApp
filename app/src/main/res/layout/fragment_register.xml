@@ -28,7 +28,19 @@
                 app:drawableStartCompat="@android:drawable/ic_input_add"
                 android:drawableStart="@android:drawable/ic_input_add"
                 tools:ignore="UseCompatTextViewDrawableXml" />
-
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/backToLogin"
+                android:minHeight="65sp"
+                app:cornerRadius="@dimen/standard"
+                android:textAllCaps="false"
+                android:backgroundTint="@color/deepOrange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/backToLogin"
+                android:layout_marginHorizontal="@dimen/standard"
+                android:fontFamily="@font/happy_monkey"
+                android:textStyle="bold"
+                android:textSize="@dimen/buttonText" />
             <TextView
                 style="@style/TextViewStyle"
                 android:layout_width="270sp"

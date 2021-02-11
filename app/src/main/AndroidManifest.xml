@@ -16,6 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".screens.home.HomeActivity"/>
+        <activity android:name=".screens.prelogin.PreLoginFragmentsActivity"/>
+        <activity android:name=".screens.prelogin.PreLoginViewPagerActivity"/>
         <activity android:name=".BaseActivity"/>
     </application>
 

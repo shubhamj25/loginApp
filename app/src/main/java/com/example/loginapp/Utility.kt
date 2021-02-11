@@ -10,9 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
-import androidx.viewpager.widget.ViewPager
 import com.example.loginapp.database.LoginDatabase
-import com.example.loginapp.screens.ViewPagerAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -56,6 +54,12 @@ fun countEmptyFields(array: ArrayList<String>):Int{
         }
     }
     return count
+}
+
+fun AppCompatActivity.showDialog(positiveAction: DialogInterface.OnClickListener?=null,negativeAction:DialogInterface.OnClickListener, title:Int, message:Int, positiveButton:Int, negativeButton:Int): AlertDialog.Builder? {
+    return AlertDialog.Builder(this).setMessage(getString(message)).setPositiveButton(
+            positiveButton, positiveAction).setNegativeButton(negativeButton,negativeAction)
+            .setTitle(getString(title))
 }
 
 fun FragmentActivity.showDialog(positiveAction: DialogInterface.OnClickListener?=null,negativeAction:DialogInterface.OnClickListener, title:Int, message:Int, positiveButton:Int, negativeButton:Int): AlertDialog.Builder? {

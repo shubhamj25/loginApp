@@ -66,4 +66,8 @@
     <string name="welcomeMessageSubtitle">Happy Learning :)</string>
     <string name="welcomeMessage">Hello,\n%1$s\n%2$s</string>
     <string name="swipeToSignUp">Swipe left to sign Up</string>
+    <string name="backToLogin">Back to Login</string>
+    <string name="deleteRecordMessage">Are you sure you want to delete this user ?</string>
+    <string name="dialogYes">Yes</string>
+    <string name="dialogNo">No</string>
 </resources>

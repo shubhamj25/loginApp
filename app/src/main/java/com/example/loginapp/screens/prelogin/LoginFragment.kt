@@ -1,4 +1,4 @@
-package com.example.loginapp.screens.preLogin
+package com.example.loginapp.screens.prelogin
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
-import androidx.viewpager.widget.ViewPager
 import com.example.loginapp.*
 import com.example.loginapp.database.LoginDatabase
 import com.example.loginapp.database.LoginEntity
@@ -19,26 +17,32 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class LoginFragment(viewPager: ViewPager) : Fragment() {
+class LoginFragment : Fragment() {
     private lateinit var sharedPreferences:SharedPreferences
     private lateinit var db:LoginDatabase
+    private var withViewPager:Boolean = false
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         sharedPreferences= getSharedPreferenceInstance(requireNotNull(this.activity).application)
         db= getDatabaseInstance(requireNotNull(this.activity).application)
+        this.withViewPager= this.arguments?.getBoolean("withViewPager") ?: false
         val binding:FragmentLoginBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_login, container, false)
         setListenerOnWidgets(binding)
-        binding.createAccount.text=getString(R.string.swipeToSignUp)
-        binding.createAccount.setOnClickListener { null }
-        binding.forgotPassword.setOnClickListener { null }
+        if(this.withViewPager) {
+            binding.createAccount.text= getString(R.string.swipeToSignUp)
+            binding.createAccount.setOnClickListener{}
+            binding.forgotPassword.setOnClickListener{}
+        }
         return binding.root
     }
     private fun setListenerOnWidgets(binding: FragmentLoginBinding) {
         binding.forgotPassword.setOnClickListener{
-            Navigation.findNavController(constraintLayout).navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
+            (activity as PreLoginFragmentListener).navigateToForgotPasswordLayout(this)
+            //Navigation.findNavController(constraintLayout).navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
         }
         binding.createAccount.setOnClickListener {
-            Navigation.findNavController(constraintLayout).navigate(R.id.action_loginFragment_to_registerFragment)
+            (activity as PreLoginFragmentListener).navigateToRegisterLayout(this)
+            //Navigation.findNavController(constraintLayout).navigate(R.id.action_loginFragment_to_registerFragment)
         }
         binding.loginButton.setOnClickListener {
             val isAValidEmail:Boolean= email.text.toString().isAValidEmail()

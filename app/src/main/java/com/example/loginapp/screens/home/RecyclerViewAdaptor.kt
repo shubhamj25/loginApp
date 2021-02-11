@@ -5,18 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.loginapp.R
 import com.example.loginapp.database.LoginDatabase
 import com.example.loginapp.database.LoginEntity
 import com.example.loginapp.getDatabaseInstance
+import com.example.loginapp.showDialog
 import com.example.loginapp.uiScope
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RecyclerViewAdaptor(private val userList: MutableList<LoginEntity>,private val application: Application):
+class RecyclerViewAdaptor(private val userList: MutableList<LoginEntity>,private val application: Application,private val appCompatActivity: AppCompatActivity):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private lateinit var db : LoginDatabase
 
@@ -97,12 +99,14 @@ class RecyclerViewAdaptor(private val userList: MutableList<LoginEntity>,private
     }
 
     private fun removeItem(position: Int) {
-        uiScope.launch {
-            deleteFromDB(userList[position].userId)
-            userList.removeAt(position)
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, userList.size)
-        }
+        appCompatActivity.showDialog({ _, _ ->
+            uiScope.launch {
+                deleteFromDB(userList[position].userId)
+                userList.removeAt(position)
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(position, userList.size)
+            }
+        },{ dialog, _ -> dialog.cancel() },R.string.app_name,R.string.deleteRecordMessage,R.string.dialogYes,R.string.dialogNo)?.show()
     }
 
     private suspend fun deleteFromDB(id: Long){

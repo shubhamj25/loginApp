@@ -1,5 +1,6 @@
-package com.example.loginapp.screens.preLogin
+package com.example.loginapp.screens.prelogin
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
 import com.example.loginapp.*
 import com.example.loginapp.database.LoginDatabase
 import com.example.loginapp.database.LoginEntity
@@ -18,34 +18,48 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RegisterFragment(viewPager: ViewPager):Fragment(){
+class RegisterFragment :Fragment(){
     private lateinit var db:LoginDatabase
-    private var vPager=viewPager
+    private lateinit var intent: Intent
+    private var withViewPager:Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?): View {
+        this.withViewPager = this.arguments?.getBoolean("withViewPager") ?: false
         val binding:FragmentRegisterBinding=DataBindingUtil.inflate(inflater,R.layout.fragment_register,container,false)
-        setView(binding,vPager)
+        setView(binding)
+        setOnClickListeners(binding)
         db= getDatabaseInstance(requireActivity().application)
+        if(withViewPager){
+            intent = Intent(requireActivity().application,PreLoginViewPagerActivity::class.java)
+            binding.backToLogin.visibility=View.GONE
+        } else{
+            intent = Intent(requireActivity().application,PreLoginFragmentsActivity::class.java)
+        }
         return binding.root
     }
 
+    private fun setOnClickListeners(binding: FragmentRegisterBinding){
+        binding.backToLogin.setOnClickListener{
+            (activity as PreLoginFragmentListener).navigateToLoginLayout(this)
+        }
+    }
     private fun isResidentialFieldValidated(firstName:TextInputEditText, lastName:TextInputEditText, email:TextInputEditText, phone:TextInputEditText, password:TextInputEditText, confirmPassword:TextInputEditText): Boolean {
         val countOfEmptyFields=countEmptyFields(arrayListOf(firstName.text.toString(),lastName.text.toString(),
                 email.text.toString(),phone.text.toString(),password.text.toString(),confirmPassword.text.toString()))
         when {
             countOfEmptyFields>=2 -> {
-                requireActivity().application.showErrorSnackBar(registerScrollViewLayout, R.string.error_emptyFields).show()
+                activity?.application?.showErrorSnackBar(registerScrollViewLayout, R.string.error_emptyFields)?.show()
                 return false
             }
             countOfEmptyFields==1 -> {
-                requireActivity().application.setInLineEmptyError(firstNameLayout,firstName,R.string.error_emptyField)
-                requireActivity().application.setInLineEmptyError(lastNameLayout,lastName,R.string.error_emptyField)
-                requireActivity().application.setInLineEmptyError(email_registerLayout,email_register,R.string.error_emptyField)
-                requireActivity().application.setInLineEmptyError(phoneLayout,phone,R.string.error_emptyField)
-                requireActivity().application.setInLineEmptyError(password_registerLayout,password_register,R.string.error_emptyField)
-                requireActivity().application.setInLineEmptyError(confirmPasswordLayout,confirmPassword,R.string.error_emptyField)
+                activity?.application?.setInLineEmptyError(firstNameLayout,firstName,R.string.error_emptyField)
+                activity?.application?.setInLineEmptyError(lastNameLayout,lastName,R.string.error_emptyField)
+                activity?.application?.setInLineEmptyError(email_registerLayout,email_register,R.string.error_emptyField)
+                activity?.application?.setInLineEmptyError(phoneLayout,phone,R.string.error_emptyField)
+                activity?.application?.setInLineEmptyError(password_registerLayout,password_register,R.string.error_emptyField)
+                activity?.application?.setInLineEmptyError(confirmPasswordLayout,confirmPassword,R.string.error_emptyField)
                 return false
             }
             countOfEmptyFields==0 -> {
@@ -62,7 +76,7 @@ class RegisterFragment(viewPager: ViewPager):Fragment(){
                     return false
                 }
                 if(!confirmPassword.text.toString().equals(password.text.toString(),ignoreCase = false)){
-                    requireActivity().application.showErrorSnackBar(registerScrollViewLayout,R.string.error_passwordsDoNoMatch).show()
+                    activity?.application?.showErrorSnackBar(registerScrollViewLayout,R.string.error_passwordsDoNoMatch)?.show()
                     return false
                 }
                 return true
@@ -77,16 +91,16 @@ class RegisterFragment(viewPager: ViewPager):Fragment(){
                 email.text.toString(),cin.text.toString(),phone.text.toString(),password.text.toString(),confirmPassword.text.toString()))
         when {
             countOfEmptyFields>=2 -> {
-                requireActivity().application.showErrorSnackBar(registerScrollViewLayout, R.string.error_emptyFields).show()
+                activity?.application?.showErrorSnackBar(registerScrollViewLayout, R.string.error_emptyFields)?.show()
                 return false
             }
             countOfEmptyFields==1 -> {
-                requireActivity().application.setInLineEmptyError(businessNameLayout,businessName,R.string.error_emptyField)
-                requireActivity().application.setInLineEmptyError(email_registerLayout,email_register,R.string.error_emptyField)
-                requireActivity().application.setInLineEmptyError(cin_registerLayout,cin_register,R.string.error_emptyField)
-                requireActivity().application.setInLineEmptyError(phoneLayout,phone,R.string.error_emptyField)
-                requireActivity().application.setInLineEmptyError(password_registerLayout,password_register,R.string.error_emptyField)
-                requireActivity().application.setInLineEmptyError(confirmPasswordLayout,confirmPassword,R.string.error_emptyField)
+                activity?.application?.setInLineEmptyError(businessNameLayout,businessName,R.string.error_emptyField)
+                activity?.application?.setInLineEmptyError(email_registerLayout,email_register,R.string.error_emptyField)
+                activity?.application?.setInLineEmptyError(cin_registerLayout,cin_register,R.string.error_emptyField)
+                activity?.application?.setInLineEmptyError(phoneLayout,phone,R.string.error_emptyField)
+                activity?.application?.setInLineEmptyError(password_registerLayout,password_register,R.string.error_emptyField)
+                activity?.application?.setInLineEmptyError(confirmPasswordLayout,confirmPassword,R.string.error_emptyField)
                 return false
             }
             countOfEmptyFields==0 -> {
@@ -107,7 +121,7 @@ class RegisterFragment(viewPager: ViewPager):Fragment(){
                     return false
                 }
                 if(!confirmPassword.text.toString().equals(password.text.toString(),ignoreCase = false)){
-                    requireActivity().application.showErrorSnackBar(registerScrollViewLayout,R.string.error_passwordsDoNoMatch).show()
+                    activity?.application?.showErrorSnackBar(registerScrollViewLayout,R.string.error_passwordsDoNoMatch)?.show()
                     return false
                 }
                 return true
@@ -116,20 +130,20 @@ class RegisterFragment(viewPager: ViewPager):Fragment(){
         }
     }
 
-    private fun setView(binding: FragmentRegisterBinding,viewPager: ViewPager){
+    private fun setView(binding: FragmentRegisterBinding){
         val itemList=arrayListOf(getString(R.string.customerType_residential),getString(R.string.customerType_commercial))
         val adapter = ArrayAdapter(requireActivity().applicationContext, R.layout.list_item, itemList)
         binding.customerTypeDropdown.setAdapter(adapter)
         binding.customerTypeDropdown.setOnItemClickListener { _,_, position,_ ->
             when(itemList[position]) {
-                getString(R.string.customerType_commercial) -> viewConstraints(getString(R.string.customerType_commercial),viewPager)
-                getString(R.string.customerType_residential) -> viewConstraints(getString(R.string.customerType_residential),viewPager)
+                getString(R.string.customerType_commercial) -> viewConstraints(getString(R.string.customerType_commercial))
+                getString(R.string.customerType_residential) -> viewConstraints(getString(R.string.customerType_residential))
                 else ->afterCustomerTypeSelected.visibility=View.GONE
             }
         }
     }
 
-    private fun viewConstraints(customerType: String,viewPager: ViewPager) {
+    private fun viewConstraints(customerType: String) {
         val isAResidentialCustomer:Boolean= customerType == getString(R.string.customerType_residential)
         businessNameLayout.visibility=if(isAResidentialCustomer) View.GONE else View.VISIBLE
         cin_registerLayout.visibility=if(isAResidentialCustomer) View.GONE else View.VISIBLE
@@ -138,6 +152,8 @@ class RegisterFragment(viewPager: ViewPager):Fragment(){
         registerBackground.visibility=View.GONE
         beforeCustomerTypeSelection.visibility=View.GONE
         afterCustomerTypeSelected.visibility=View.VISIBLE
+
+
         registerButton.setOnClickListener {
             when(customerType){
                 getString(R.string.customerType_residential) ->{
@@ -145,7 +161,7 @@ class RegisterFragment(viewPager: ViewPager):Fragment(){
                         uiScope.launch {
 
                             if (checkBeforeRegister(email_register.text.toString()) != null) {
-                                requireActivity().showDialog({ dialog, _ -> dialog.cancel() },
+                                activity?.showDialog({ dialog, _ -> dialog.cancel() },
                                         R.string.registrationDialogTitle,
                                         R.string.alreadyRegisteredEntryFound,
                                         R.string.dialogPositive)?.show()
@@ -155,16 +171,17 @@ class RegisterFragment(viewPager: ViewPager):Fragment(){
                                 insert(db, firstName.text.toString(), lastName.text.toString(), "", email_register.text.toString(), "",
                                         phone.text.toString(), password_register.text.toString(), getString(R.string.customerType_residential))
 
-                                requireActivity().showDialog({ _, _ ->
-                                    viewPager.currentItem = 0
-                                    resetRegisterScreen()
+                                activity?.showDialog(
+                                    { _, _ ->
+                                    startActivity(intent)
+                                    requireActivity().finish()
+                                    //resetRegisterScreen()
                                     //Navigation.findNavController(registerScrollViewLayout).navigate(R.id.action_registerFragment_to_loginFragment)
-
                                     },
-                                        { dialog, _ -> dialog.cancel() },
-                                        R.string.registrationDialogTitle,
-                                        R.string.residentialRegistrationSuccessful,
-                                        R.string.dialogPositive, R.string.dialogNegative)?.show()
+                                    { dialog, _ -> dialog.cancel() },
+                                    R.string.registrationDialogTitle,
+                                    R.string.residentialRegistrationSuccessful,
+                                    R.string.dialogPositive, R.string.dialogNegative)?.show()
                             }
                         }
                     }
@@ -173,8 +190,7 @@ class RegisterFragment(viewPager: ViewPager):Fragment(){
                     if(isCommercialFieldValidated(businessName,email_register,cin_register,phone,password_register,confirmPassword)){
                         uiScope.launch {
                             if(checkBeforeRegister(email_register.text.toString())!=null){
-
-                                requireActivity().showDialog({ dialog, _ -> dialog.cancel() },
+                                activity?.showDialog({ dialog, _ -> dialog.cancel() },
                                         R.string.registrationDialogTitle,
                                         R.string.alreadyRegisteredEntryFound,
                                         R.string.dialogPositive)?.show()
@@ -182,15 +198,17 @@ class RegisterFragment(viewPager: ViewPager):Fragment(){
                             else {
                                 insert(db,"","",businessName.text.toString(),email_register.text.toString(),cin_register.text.toString(),
                                         phone.text.toString(),password_register.text.toString(),getString(R.string.customerType_commercial))
-                                requireActivity().showDialog({ _, _ ->
-                                    viewPager.currentItem = 0
-                                    resetRegisterScreen()
+                                activity?.showDialog(
+                                    {    _, _ ->
+                                    startActivity(intent)
+                                    requireActivity().finish()
+                                    //resetRegisterScreen()
                                     //Navigation.findNavController(registerScrollViewLayout).navigate(R.id.action_registerFragment_to_loginFragment)
-                                },
-                                        { dialog, _ -> dialog.cancel() },
-                                        R.string.registrationDialogTitle,
-                                        R.string.commercialRegistrationSuccessful,
-                                        R.string.dialogPositive,R.string.dialogNegative)?.show()
+                                    },
+                                    { dialog, _ -> dialog.cancel() },
+                                    R.string.registrationDialogTitle,
+                                    R.string.commercialRegistrationSuccessful,
+                                    R.string.dialogPositive,R.string.dialogNegative)?.show()
                             }
                         }
 
@@ -211,23 +229,5 @@ class RegisterFragment(viewPager: ViewPager):Fragment(){
             val res=db.loginDatabaseDao.getByEmail(email)
             res
         }
-    }
-
-    private fun resetRegisterScreen(){
-        registerBackground.visibility=View.VISIBLE
-        beforeCustomerTypeSelection.visibility=View.VISIBLE
-        afterCustomerTypeSelected.visibility=View.GONE
-        clearAllFields()
-    }
-
-    private fun clearAllFields() {
-        firstName.text=null
-        lastName.text=null
-        cin_register.text=null
-        email_register.text=null
-        phone.text=null
-        password_register.text=null
-        confirmPassword.text=null
-        customerTypeDropdown.text=null
     }
 }

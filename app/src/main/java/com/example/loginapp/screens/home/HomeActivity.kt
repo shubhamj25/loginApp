@@ -6,7 +6,6 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import com.example.loginapp.BaseActivity
 import com.example.loginapp.R
-import com.example.loginapp.clearSharedPreferences
 import com.example.loginapp.database.LoginEntity
 import com.example.loginapp.getLinearLayoutManager
 import kotlinx.android.synthetic.main.activity_home.*
@@ -27,7 +26,7 @@ class HomeActivity: BaseActivity() {
 
     private fun setObservers(){
         users.observe(this, { newList ->
-            userList.adapter = RecyclerViewAdaptor(newList,application)
+            userList.adapter = RecyclerViewAdaptor(newList,application,this)
             userList.visibility = View.VISIBLE
             userListProgressBar.visibility = View.GONE
         })

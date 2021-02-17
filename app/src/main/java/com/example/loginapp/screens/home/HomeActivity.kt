@@ -1,4 +1,5 @@
 package com.example.loginapp.screens.home
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -21,9 +22,14 @@ class HomeActivity: BaseActivity() {
         users=db.loginDatabaseDao.getAllUsers()
         userList.layoutManager= getLinearLayoutManager(application)
         setObservers()
+        setListeners()
         setWelcomeString()
     }
-
+    private fun setListeners(){
+        locateMeFab.setOnClickListener{
+            startActivity(Intent(applicationContext,LocationActivity::class.java))
+        }
+    }
     private fun setObservers(){
         users.observe(this, { newList ->
             userList.adapter = RecyclerViewAdaptor(newList,application,this)

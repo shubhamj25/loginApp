@@ -1,4 +1,4 @@
-package com.example.loginapp.screens.prelogin
+package com.example.loginapp.screens.prelogin.fragments
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -12,6 +12,7 @@ import com.example.loginapp.database.LoginDatabase
 import com.example.loginapp.database.LoginEntity
 import com.example.loginapp.databinding.FragmentLoginBinding
 import com.example.loginapp.screens.home.HomeActivity
+import com.example.loginapp.screens.prelogin.PreLoginFragmentListener
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

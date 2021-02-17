@@ -1,4 +1,4 @@
-package com.example.loginapp.screens.prelogin
+package com.example.loginapp.screens.prelogin.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,9 @@ import com.example.loginapp.*
 import com.example.loginapp.database.LoginDatabase
 import com.example.loginapp.database.LoginEntity
 import com.example.loginapp.databinding.FragmentRegisterBinding
+import com.example.loginapp.screens.prelogin.PreLoginFragmentListener
+import com.example.loginapp.screens.prelogin.activity.PreLoginFragmentsActivity
+import com.example.loginapp.screens.prelogin.activity.PreLoginViewPagerActivity
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.coroutines.Dispatchers
@@ -32,10 +35,10 @@ class RegisterFragment :Fragment(){
         setOnClickListeners(binding)
         db= getDatabaseInstance(requireActivity().application)
         if(withViewPager){
-            intent = Intent(requireActivity().application,PreLoginViewPagerActivity::class.java)
+            intent = Intent(requireActivity().application, PreLoginViewPagerActivity::class.java)
             binding.backToLogin.visibility=View.GONE
         } else{
-            intent = Intent(requireActivity().application,PreLoginFragmentsActivity::class.java)
+            intent = Intent(requireActivity().application, PreLoginFragmentsActivity::class.java)
         }
         return binding.root
     }

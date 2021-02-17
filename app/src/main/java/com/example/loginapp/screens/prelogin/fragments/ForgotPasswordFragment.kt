@@ -1,4 +1,4 @@
-package com.example.loginapp.screens.prelogin
+package com.example.loginapp.screens.prelogin.fragments
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.loginapp.R
 import com.example.loginapp.databinding.FragmentForgotpasswordBinding
+import com.example.loginapp.screens.prelogin.PreLoginFragmentListener
 import kotlinx.android.synthetic.main.fragment_forgotpassword.*
 
 class ForgotPasswordFragment:Fragment() {

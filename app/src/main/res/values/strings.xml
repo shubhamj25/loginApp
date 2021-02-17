@@ -70,4 +70,8 @@
     <string name="deleteRecordMessage">Are you sure you want to delete this user ?</string>
     <string name="dialogYes">Yes</string>
     <string name="dialogNo">No</string>
+    <string name="permissionDenied">Permission Denied</string>
+    <string name="permissionGranted">Permission Granted</string>
+    <string name="permissionGrantedAlready">Permission Already Granted</string>
+    <string name="green">#2ECC71</string>
 </resources>

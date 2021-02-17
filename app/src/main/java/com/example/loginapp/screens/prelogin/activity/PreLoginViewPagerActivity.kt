@@ -1,17 +1,20 @@
-package com.example.loginapp.screens.prelogin
+package com.example.loginapp.screens.prelogin.activity
 
 import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
 import com.example.loginapp.BaseActivity
 import com.example.loginapp.R
+import com.example.loginapp.screens.prelogin.ViewPagerAdapter
+import com.example.loginapp.screens.prelogin.ViewPagerListener
+import com.example.loginapp.screens.prelogin.fragments.LoginFragment
+import com.example.loginapp.screens.prelogin.fragments.RegisterFragment
 import kotlinx.android.synthetic.main.activity_prelogin_viewpager.*
 
-class PreLoginViewPagerActivity:BaseActivity(),ViewPagerListener {
+class PreLoginViewPagerActivity:BaseActivity(), ViewPagerListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_prelogin_viewpager)
         addPages(viewpager)
-
     }
     private fun addPages(viewPager: ViewPager) {
         val adapter = ViewPagerAdapter(supportFragmentManager)

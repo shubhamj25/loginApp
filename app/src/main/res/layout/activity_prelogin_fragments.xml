@@ -13,7 +13,7 @@
 <!--            app:navGraph="@navigation/navigation" />-->
         <fragment
             android:id="@+id/loginFragment"
-            android:name="com.example.loginapp.screens.prelogin.LoginFragment"
+            android:name="com.example.loginapp.screens.prelogin.fragments.LoginFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

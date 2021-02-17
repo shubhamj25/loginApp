@@ -7,4 +7,5 @@
     <dimen name="buttonText">18sp</dimen>
     <dimen name="subTitle">20sp</dimen>
     <dimen name="subPara">16sp</dimen>
+    <dimen name="snippet">15sp</dimen>
 </resources>

@@ -74,4 +74,5 @@
     <string name="permissionGranted">Permission Granted</string>
     <string name="permissionGrantedAlready">Permission Already Granted</string>
     <string name="green">#2ECC71</string>
+    <string name="myLocation">Current Location</string>
 </resources>

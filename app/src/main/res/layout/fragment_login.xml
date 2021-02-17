@@ -93,6 +93,7 @@
                         <CheckBox
                             android:id="@+id/rememberMe"
                             android:layout_width="0dp"
+                            android:checked="true"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/happy_monkey"

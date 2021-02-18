@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         app:cardCornerRadius="@dimen/standard"
         android:outlineAmbientShadowColor="@color/grey"
-        android:layout_margin="@dimen/vsmall"
+        android:layout_margin="@dimen/vSmall"
         android:background="@drawable/border"
         android:layout_height="wrap_content">
             <LinearLayout
@@ -34,7 +34,7 @@
                     </TextView>
                     <TextView
                         android:id="@+id/lname_residential"
-                        android:layout_marginLeft="@dimen/vsmall"
+                        android:layout_marginLeft="@dimen/vSmall"
                         android:fontFamily="@font/happy_monkey"
                         android:textSize="@dimen/buttonText"
                         android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/e_mail_residential"
-                    android:layout_marginTop="@dimen/vsmall"
+                    android:layout_marginTop="@dimen/vSmall"
                     android:fontFamily="@font/happy_monkey"
                     android:textSize="@dimen/subPara"
                     android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
                     android:backgroundTint="@color/deepRed"
                     android:fontFamily="@font/happy_monkey"
                     android:textSize="@dimen/standard"
-                    android:layout_marginTop="@dimen/vsmall"
+                    android:layout_marginTop="@dimen/vSmall"
                     android:text="@string/deleteRecord"
                     android:textColor="@color/white"
                     android:textStyle="bold"

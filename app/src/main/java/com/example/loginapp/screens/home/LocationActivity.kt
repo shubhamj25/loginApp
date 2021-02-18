@@ -5,10 +5,13 @@ import android.graphics.Color
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.loginapp.BaseActivity
 import com.example.loginapp.R
+import com.example.loginapp.showSnackBarOnTop
+import com.example.loginapp.squareMap
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -19,11 +22,18 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolygonOptions
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_location.*
+import kotlin.math.sqrt
+
+
 class LocationActivity : BaseActivity(), OnMapReadyCallback {
-    private val updateInterval = (10 * 1000).toLong()  /* 10 secs */
-    private val fastInterval: Long = 2000 /* 2 sec */
+    companion object{
+        const val UPDATE_INTERVAL = (10 * 1000).toLong()  /* 10 secs */
+        const val FAST_INTERVAL: Long = 2000 /* 2 sec */
+        const val EQUIVALENT_TO_A_KM=0.009009009009009 // 1km on Map
+    }
     private lateinit var mGoogleMap: GoogleMap
     private lateinit var myLocation: LatLng
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +41,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
         setContentView(R.layout.activity_location)
         val mapFragment = supportFragmentManager.findFragmentById(R.id.location) as SupportMapFragment
         mapFragment.getMapAsync(this as OnMapReadyCallback)
+        exit.setColorFilter(Color.parseColor(getString(R.string.black)))
     }
 
     override fun onStart() {
@@ -38,32 +49,61 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
         startLocationUpdates()
     }
 
+    private fun setListeners(){
+        reCenter.setOnClickListener{
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 13F))
+            detailedLocation.animate().alpha(1.0f)
+        }
+        exit.setOnClickListener{this.finish()}
+        hideDetailedLocation.setOnClickListener{
+            detailedLocation.animate().alpha(0.0f)
+        }
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap=googleMap
         mGoogleMap.setInfoWindowAdapter(CustomInfoWindowAdapter(this))
         val location = FusedLocationProviderClient(this).lastLocation
         location.addOnCompleteListener{
-                if(checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, 1,mGoogleMap)) {
+                if(checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, 1)) {
                     myLocation = LatLng(it.result.latitude, it.result.longitude)
-                    val geoCoder = Geocoder(this)
+                    setListeners()
+                    val geoCoder=Geocoder(this)
                     val address = geoCoder.getFromLocation(myLocation.latitude, myLocation.longitude, 1)
                     val message = address[0].featureName + '\n' + address[0].locality + " ," + address[0].countryName + " - " + address[0].postalCode
                     val locationMarker = googleMap.addMarker(
                             MarkerOptions().position(myLocation).title(getString(R.string.myLocation))
                     )
                     locationMarker.snippet = message
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 17F)).also {
-                        locationMarker.showInfoWindow()
-                    }
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 13F))
+                    locationMarker.showInfoWindow()
+                    addSquareAround(googleMap)
+                    setDescription(address[0].getAddressLine(0)+"\n"+message)
+                    locationTitle.text=address[0].locality
                 }
         }
     }
+
+    private fun setDescription(address:String){
+        locationFullAddress.text=address
+        locationProgressBar.visibility=View.GONE
+        locationFullAddress.visibility=View.VISIBLE
+    }
+
+    private fun addSquareAround(googleMap: GoogleMap){
+        val arrayPoints= squareMap(myLocation)
+        val polygonOptions = PolygonOptions()
+        polygonOptions.addAll(arrayPoints).strokeColor(Color.parseColor(getString(R.string.purple_700)))
+        .fillColor(0x551E90FF).strokeWidth(7f).zIndex(1f)
+        googleMap.addPolygon(polygonOptions)
+    }
+
     private fun startLocationUpdates() {
         // initialize location request object
         LocationRequest.create().run {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            interval = updateInterval
-            setFastestInterval(fastInterval)
+            interval = UPDATE_INTERVAL
+            setFastestInterval(FAST_INTERVAL)
         }
         registerLocationListener()
     }
@@ -86,13 +126,14 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
     }
 
-    private fun checkPermission(permission: String, requestCode: Int,mGoogleMap: GoogleMap):Boolean{
+    private fun checkPermission(permission: String, requestCode: Int):Boolean{
         // Checking if permission is not granted
        return if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
            ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
            false
        } else {
-            Snackbar.make(locationConstraintLayout, getString(R.string.permissionGranted), Snackbar.LENGTH_LONG).setBackgroundTint(Color.parseColor(getString(R.string.green))).setTextColor(Color.WHITE).show()
+            showSnackBarOnTop(locationConstraintLayout,this,R.string.permissionGranted,Color.parseColor(getString(R.string.green))).show()
+           //Snackbar.make(locationConstraintLayout, getString(R.string.permissionGranted), Snackbar.LENGTH_LONG).setBackgroundTint(Color.parseColor(getString(R.string.green))).setTextColor(Color.WHITE).show()
             true
         }
     }

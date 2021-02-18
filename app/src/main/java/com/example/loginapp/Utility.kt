@@ -1,22 +1,49 @@
 package com.example.loginapp
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.example.loginapp.database.LoginDatabase
+import com.example.loginapp.screens.home.LocationActivity
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlin.math.sqrt
+val dToPt= LocationActivity.EQUIVALENT_TO_A_KM * 2 * sqrt(2F)
+fun squareMap(myLocation:LatLng): MutableList<LatLng> {
+    return mutableListOf(
+            LatLng(myLocation.latitude+dToPt,myLocation.longitude+dToPt),
+            LatLng(myLocation.latitude-dToPt,myLocation.longitude+dToPt),
+            LatLng(myLocation.latitude-dToPt,myLocation.longitude-dToPt),
+            LatLng(myLocation.latitude+dToPt,myLocation.longitude-dToPt)
+    )
+}
+
+fun showSnackBarOnTop(contextView: View,activity: Activity,message: Int,color: Int):Snackbar{
+    val snack = Snackbar.make(contextView, activity.getString(message), Snackbar.LENGTH_LONG)
+    val view = snack.view
+    val params = view.layoutParams as FrameLayout.LayoutParams
+    params.gravity = Gravity.CENTER_HORIZONTAL or Gravity.TOP
+    view.layoutParams = params
+    snack.setBackgroundTint(color)
+    return snack
+}
+
 var uiScope = CoroutineScope(Dispatchers.Main +  Job())
 fun getSharedPreferenceInstance(application: Application):SharedPreferences{
     return application.getSharedPreferences(application.getString(R.string.myPrefs), Context.MODE_PRIVATE)

@@ -11,11 +11,22 @@ import com.example.loginapp.screens.prelogin.PreLoginFragmentListener
 import kotlinx.android.synthetic.main.fragment_forgotpassword.*
 
 class ForgotPasswordFragment:Fragment() {
+    private var withViewPager:Boolean = false
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        this.withViewPager= this.arguments?.getBoolean(getString(R.string.withViewPager)) ?: false
         val binding:FragmentForgotpasswordBinding=DataBindingUtil.inflate(inflater,R.layout.fragment_forgotpassword,container,false)
-        binding.backToLoginFromForgotPass.setOnClickListener {
-            (activity as PreLoginFragmentListener).navigateToLoginLayout(this)
-        }
+        setListeners(binding)
         return binding.root
+    }
+
+    private fun setListeners(binding: FragmentForgotpasswordBinding){
+        if(this.withViewPager) {
+            binding.backToLoginFromForgotPass.visibility=View.GONE
+        }
+        else{
+            binding.backToLoginFromForgotPass.setOnClickListener {
+                (activity as PreLoginFragmentListener).navigateToLoginLayout(this)
+            }
+        }
     }
 }

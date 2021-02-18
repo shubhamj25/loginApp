@@ -29,7 +29,7 @@ class RegisterFragment :Fragment(){
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?): View {
-        this.withViewPager = this.arguments?.getBoolean("withViewPager") ?: false
+        this.withViewPager = this.arguments?.getBoolean(getString(R.string.withViewPager)) ?: false
         val binding:FragmentRegisterBinding=DataBindingUtil.inflate(inflater,R.layout.fragment_register,container,false)
         setView(binding)
         setOnClickListeners(binding)

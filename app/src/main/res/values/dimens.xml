@@ -3,9 +3,10 @@
     <dimen name="standard">12sp</dimen>
     <dimen name="title">30sp</dimen>
     <dimen name="small">15sp</dimen>
-    <dimen name="vsmall">6sp</dimen>
+    <dimen name="vSmall">6sp</dimen>
     <dimen name="buttonText">18sp</dimen>
     <dimen name="subTitle">20sp</dimen>
     <dimen name="subPara">16sp</dimen>
-    <dimen name="snippet">15sp</dimen>
+    <dimen name="snippet">14sp</dimen>
+    <dimen name="fabIconSize">35dp</dimen>
 </resources>

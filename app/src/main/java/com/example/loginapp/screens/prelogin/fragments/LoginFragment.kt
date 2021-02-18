@@ -25,7 +25,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         sharedPreferences= getSharedPreferenceInstance(requireNotNull(this.activity).application)
         db= getDatabaseInstance(requireNotNull(this.activity).application)
-        this.withViewPager= this.arguments?.getBoolean("withViewPager") ?: false
+        this.withViewPager= this.arguments?.getBoolean(getString(R.string.withViewPager)) ?: false
         val binding:FragmentLoginBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_login, container, false)
         setListenerOnWidgets(binding)

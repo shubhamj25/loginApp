@@ -58,7 +58,7 @@
                 app:errorEnabled="true"
                 app:errorTextAppearance="@style/TextFieldInlineError"
                 android:layout_marginHorizontal="@dimen/standard"
-                android:layout_marginVertical="@dimen/vsmall"
+                android:layout_marginVertical="@dimen/vSmall"
                 app:boxCornerRadiusTopEnd="@dimen/standard"
                 app:boxCornerRadiusTopStart="@dimen/standard">
 

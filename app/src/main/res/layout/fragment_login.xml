@@ -79,7 +79,7 @@
                         style="@style/TextFieldSmall"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/vsmall"
+                        android:layout_marginBottom="@dimen/vSmall"
                         android:hint="@string/password"
                         android:inputType="textPassword"
                         android:maxLines="1" />

@@ -24,12 +24,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/subPara"
+                android:textColor="@color/black"
                 android:fontFamily="@font/happy_monkey"
                 android:textStyle="bold"/>
         </LinearLayout>
         <TextView
             android:id="@+id/snippet"
             android:paddingHorizontal="@dimen/standard"
+            android:textColor="@color/black"
             android:fontFamily="@font/happy_monkey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

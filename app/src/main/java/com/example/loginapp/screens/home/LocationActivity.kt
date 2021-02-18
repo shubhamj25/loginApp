@@ -1,5 +1,6 @@
 package com.example.loginapp.screens.home
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Geocoder
@@ -8,10 +9,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.loginapp.BaseActivity
-import com.example.loginapp.R
-import com.example.loginapp.showSnackBarOnTop
-import com.example.loginapp.squareMap
+import com.example.loginapp.*
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -23,10 +21,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolygonOptions
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_location.*
-import kotlin.math.sqrt
-
 
 class LocationActivity : BaseActivity(), OnMapReadyCallback {
     companion object{
@@ -60,6 +55,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
         }
     }
 
+    @SuppressLint("VisibleForTests")
     override fun onMapReady(googleMap: GoogleMap) {
         mGoogleMap=googleMap
         mGoogleMap.setInfoWindowAdapter(CustomInfoWindowAdapter(this))
@@ -118,12 +114,11 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun onLocationChanged(location: Location) {
-        // create message for toast with updated latitude and longitude
-        val location = LatLng(location.latitude, location.longitude)
+        val loc = LatLng(location.latitude, location.longitude)
         val msg = "Updated Location: " + location.latitude + " , " + location.longitude
         mGoogleMap.clear()
-        mGoogleMap.addMarker(MarkerOptions().position(location).title(msg))
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
+        mGoogleMap.addMarker(MarkerOptions().position(loc).title(msg))
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(loc))
     }
 
     private fun checkPermission(permission: String, requestCode: Int):Boolean{
@@ -133,7 +128,6 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
            false
        } else {
             showSnackBarOnTop(locationConstraintLayout,this,R.string.permissionGranted,Color.parseColor(getString(R.string.green))).show()
-           //Snackbar.make(locationConstraintLayout, getString(R.string.permissionGranted), Snackbar.LENGTH_LONG).setBackgroundTint(Color.parseColor(getString(R.string.green))).setTextColor(Color.WHITE).show()
             true
         }
     }
@@ -144,8 +138,7 @@ class LocationActivity : BaseActivity(), OnMapReadyCallback {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     onMapReady(mGoogleMap)
                 } else {
-                    Snackbar.make(locationConstraintLayout, getString(R.string.permissionDenied), Snackbar.LENGTH_LONG).setBackgroundTint(Color.parseColor(getString(R.string.deepRed))).setTextColor(Color.WHITE).show()
-                    this.finish()
+                    showDialog({ _, _ -> this.finish()},R.string.permissionDenied,R.string.permissionDeniedMessage,R.string.dialogPositive)?.show()
                 }
                 return
             }

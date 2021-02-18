@@ -40,7 +40,7 @@ fun showSnackBarOnTop(contextView: View,activity: Activity,message: Int,color: I
     val params = view.layoutParams as FrameLayout.LayoutParams
     params.gravity = Gravity.CENTER_HORIZONTAL or Gravity.TOP
     view.layoutParams = params
-    snack.setBackgroundTint(color)
+    snack.setBackgroundTint(color).setTextColor(Color.WHITE)
     return snack
 }
 

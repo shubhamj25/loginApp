@@ -1,5 +1,4 @@
 package com.example.loginapp.screens.prelogin.fragments
-
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -20,30 +19,34 @@ import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
 class RegisterFragment :Fragment(){
     private lateinit var db:LoginDatabase
     private lateinit var intent: Intent
     private var withViewPager:Boolean = false
+    private lateinit var binding:FragmentRegisterBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?): View {
         this.withViewPager = this.arguments?.getBoolean(getString(R.string.withViewPager)) ?: false
-        val binding:FragmentRegisterBinding=DataBindingUtil.inflate(inflater,R.layout.fragment_register,container,false)
-        setView(binding)
-        setOnClickListeners(binding)
-        db= getDatabaseInstance(requireActivity().application)
+        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_register,container,false)
+        db= activity?.application?.let { getDatabaseInstance(it) }!!
         if(withViewPager){
-            intent = Intent(requireActivity().application, PreLoginViewPagerActivity::class.java)
+            intent = Intent(activity?.application, PreLoginViewPagerActivity::class.java)
             binding.backToLogin.visibility=View.GONE
         } else{
-            intent = Intent(requireActivity().application, PreLoginFragmentsActivity::class.java)
+            intent = Intent(activity?.application, PreLoginFragmentsActivity::class.java)
         }
         return binding.root
     }
 
-    private fun setOnClickListeners(binding: FragmentRegisterBinding){
+    override fun onStart() {
+        super.onStart()
+        setView()
+        setOnClickListeners()
+    }
+
+    private fun setOnClickListeners(){
         binding.backToLogin.setOnClickListener{
             (activity as PreLoginFragmentListener).navigateToLoginLayout(this)
         }
@@ -133,9 +136,9 @@ class RegisterFragment :Fragment(){
         }
     }
 
-    private fun setView(binding: FragmentRegisterBinding){
+    private fun setView(){
         val itemList=arrayListOf(getString(R.string.customerType_residential),getString(R.string.customerType_commercial))
-        val adapter = ArrayAdapter(requireActivity().applicationContext, R.layout.list_item, itemList)
+        val adapter = activity?.applicationContext?.let { ArrayAdapter(it, R.layout.list_item, itemList) }
         binding.customerTypeDropdown.setAdapter(adapter)
         binding.customerTypeDropdown.setOnItemClickListener { _,_, position,_ ->
             when(itemList[position]) {
@@ -155,7 +158,6 @@ class RegisterFragment :Fragment(){
         registerBackground.visibility=View.GONE
         beforeCustomerTypeSelection.visibility=View.GONE
         afterCustomerTypeSelected.visibility=View.VISIBLE
-
 
         registerButton.setOnClickListener {
             when(customerType){
@@ -177,7 +179,7 @@ class RegisterFragment :Fragment(){
                                 activity?.showDialog(
                                     { _, _ ->
                                     startActivity(intent)
-                                    requireActivity().finish()
+                                    activity?.finish()
                                     //resetRegisterScreen()
                                     //Navigation.findNavController(registerScrollViewLayout).navigate(R.id.action_registerFragment_to_loginFragment)
                                     },
@@ -204,7 +206,7 @@ class RegisterFragment :Fragment(){
                                 activity?.showDialog(
                                     {    _, _ ->
                                     startActivity(intent)
-                                    requireActivity().finish()
+                                    activity?.finish()
                                     //resetRegisterScreen()
                                     //Navigation.findNavController(registerScrollViewLayout).navigate(R.id.action_registerFragment_to_loginFragment)
                                     },

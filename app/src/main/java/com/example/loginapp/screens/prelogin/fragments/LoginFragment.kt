@@ -52,19 +52,19 @@ class LoginFragment : Fragment() {
                 uiScope.launch {
                     val foundMatch=checkBeforeLogin(email.text.toString(),password.text.toString())
                     if(foundMatch!=null){
-                        val intent= Intent(requireActivity().application, HomeActivity::class.java)
+                        val intent= Intent(activity?.application, HomeActivity::class.java)
                         val bundle=Bundle()
                         bundle.putString(getString(R.string.bundleArgEmail), foundMatch.email)
                         intent.putExtra(getString(R.string.bundleKey), bundle)
                         rememberUser(sharedPreferences)
                         clearErrorOnFields()
                         clearFields()
-                        requireActivity().showDialog({ _, _ -> startActivity(intent)},{ dialog, _ -> dialog.cancel() },
+                        activity?.showDialog({ _, _ -> startActivity(intent)},{ dialog, _ -> dialog.cancel() },
                             R.string.dialog_login_title,R.string.loginSuccessful,
                             R.string.dialogPositive,R.string.dialogNegative)?.show()
                     }
                     else{
-                        requireActivity().showDialog({ dialog, _ -> dialog.cancel() },
+                        activity?.showDialog({ dialog, _ -> dialog.cancel() },
                             R.string.dialog_login_title,R.string.invalidCredentials,
                             R.string.dialogPositive)?.show()
                     }

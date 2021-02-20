@@ -41,79 +41,68 @@
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="61dp" />
 
-            <FrameLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:id="@+id/emailLoginLayout"
                 android:layout_marginHorizontal="@dimen/standard"
-                android:orientation="horizontal">
-                <com.google.android.material.textfield.TextInputLayout
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email"
+                    style="@style/TextFieldSmall"
                     android:layout_width="match_parent"
-                    android:id="@+id/emailLoginLayout"
-                    android:layout_height="wrap_content">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/email"
-                        style="@style/TextFieldSmall"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:inputType="textEmailAddress"
-                        android:hint="@string/email" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/standard"
-                android:orientation="horizontal">
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/password_LoginLayout"
-                    android:layout_width="match_parent"
-                    app:passwordToggleEnabled="true"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="0dp">
+                    android:maxLines="1"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/email" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/password"
-                        style="@style/TextFieldSmall"
-                        android:layout_width="match_parent"
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/password_LoginLayout"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="@dimen/standard"
+                app:passwordToggleEnabled="true"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="0dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password"
+                    style="@style/TextFieldSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/vSmall"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="@dimen/standard">
+
+                    <CheckBox
+                        android:id="@+id/rememberMe"
+                        android:layout_width="0dp"
+                        android:checked="true"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/vSmall"
-                        android:hint="@string/password"
-                        android:inputType="textPassword"
-                        android:maxLines="1" />
+                        android:layout_weight="1"
+                        android:fontFamily="@font/happy_monkey"
+                        android:text="@string/remember_me" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/forgotPassword"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginHorizontal="@dimen/standard">
+                        android:textAllCaps="false"
+                        android:textAlignment="viewEnd"
+                        android:text="@string/forgotPass"
+                        android:gravity="end" />
 
-                        <CheckBox
-                            android:id="@+id/rememberMe"
-                            android:layout_width="0dp"
-                            android:checked="true"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/happy_monkey"
-                            android:text="@string/remember_me" />
+                </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/forgotPassword"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAllCaps="false"
-                            android:textAlignment="viewEnd"
-                            android:text="@string/forgotPass"
-                            android:gravity="end" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    </LinearLayout>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-            </FrameLayout>
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"

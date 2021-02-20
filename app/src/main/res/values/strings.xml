@@ -79,4 +79,6 @@
     <string name="purple_700">#FF3700B3</string>
     <string name="withViewPager">withViewPager</string>
     <string name="permissionDeniedMessage">You have denied location permissions earlier.\nIn order to access this feature please enable location permissions.</string>
+    <string name="locationReq">Location Services</string>
+    <string name="locationReqMessage">Your GPS seems to be disabled, do you want to enable it?</string>
 </resources>

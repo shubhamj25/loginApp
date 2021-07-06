@@ -11,7 +11,7 @@ open class BaseActivity:AppCompatActivity() {
     var viewModelJob = Job()
     val uiScope = CoroutineScope(Dispatchers.Main +  viewModelJob)
     lateinit var db:LoginDatabase
-    lateinit var sharedPreferences: SharedPreferences
+    open lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         db = getDatabaseInstance(this.application)

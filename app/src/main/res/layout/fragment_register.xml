@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:theme="@style/Theme.MaterialComponents.Light"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/registerScrollViewLayout"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -19,35 +20,36 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    style="@style/TextViewStyle"
                     android:id="@+id/registerTitle"
+                    style="@style/TextViewStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/standard"
+                    android:drawableStart="@android:drawable/ic_input_add"
                     android:drawableLeft="@android:drawable/ic_input_add"
                     android:text="@string/createAccount"
                     android:textSize="@dimen/title"
                     android:textStyle="bold"
                     app:drawableStartCompat="@android:drawable/ic_input_add"
-                    android:drawableStart="@android:drawable/ic_input_add"
                     tools:ignore="UseCompatTextViewDrawableXml" />
+
                 <Button
                     android:id="@+id/backToLogin"
-                    android:minHeight="65sp"
-                    app:cornerRadius="@dimen/standard"
-                    android:textAllCaps="false"
-                    android:backgroundTint="@color/deepOrange"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
                     android:layout_height="wrap_content"
-                    android:text="@string/backToLogin"
                     android:layout_marginHorizontal="@dimen/standard"
+                    android:backgroundTint="@color/deepOrange"
                     android:fontFamily="@font/happy_monkey"
+                    android:minHeight="65sp"
+                    android:text="@string/backToLogin"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/buttonText"
                     android:textStyle="bold"
-                    android:textSize="@dimen/buttonText" />
+                    app:cornerRadius="@dimen/standard" />
+
                 <TextView
-                    style="@style/TextViewStyle"
                     android:id="@+id/registerSubtitle"
+                    style="@style/TextViewStyle"
                     android:layout_width="270sp"
                     android:layout_marginHorizontal="@dimen/standard"
                     android:layout_marginBottom="@dimen/standard"
@@ -60,12 +62,12 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:errorEnabled="true"
-                    app:errorTextAppearance="@style/TextFieldInlineError"
                     android:layout_marginHorizontal="@dimen/standard"
                     android:layout_marginVertical="@dimen/vSmall"
                     app:boxCornerRadiusTopEnd="@dimen/standard"
-                    app:boxCornerRadiusTopStart="@dimen/standard">
+                    app:boxCornerRadiusTopStart="@dimen/standard"
+                    app:errorEnabled="true"
+                    app:errorTextAppearance="@style/TextFieldInlineError">
 
                     <AutoCompleteTextView
                         android:id="@+id/customerTypeDropdown"
@@ -76,60 +78,63 @@
                         android:minHeight="60sp"
                         tools:targetApi="lollipop" />
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <TextView
                     android:id="@+id/beforeCustomerTypeSelection"
                     style="@style/TextViewStyle"
                     android:layout_width="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="@dimen/standard"
                     android:layout_marginBottom="@dimen/standard"
                     android:fontFamily="@font/poppins_light"
-                    android:textAlignment="center"
                     android:padding="@dimen/title"
-                    android:layout_gravity="center_horizontal"
                     android:text="@string/noCustomerTypeSelected"
+                    android:textAlignment="center"
                     android:textSize="16sp" />
+
                 <LinearLayout
                     android:id="@+id/afterCustomerTypeSelected"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone"
+                    android:layout_marginHorizontal="@dimen/standard"
                     android:elevation="@dimen/standard"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/businessNameLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/businessNameLayout"
                         app:errorEnabled="true"
-                        app:errorTextAppearance="@style/TextFieldInlineError"
+                        app:errorTextAppearance="@style/TextFieldInlineError">
 
-                        >
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/businessName"
                             style="@style/TextFieldSmall"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/TextFieldInlineError"
                             android:hint="@string/business_name"
                             android:inputType="textEmailAddress"
-                            android:maxLines="1" />
+                            android:maxLines="1"
+                            app:errorEnabled="true"
+                            app:errorTextAppearance="@style/TextFieldInlineError" />
                     </com.google.android.material.textfield.TextInputLayout>
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:baselineAligned="false"
                         android:orientation="horizontal"
-                        android:weightSum="3"
-                        android:baselineAligned="false">
+                        android:weightSum="3">
+
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/firstNameLayout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.8"
                             app:errorEnabled="true"
                             app:errorTextAppearance="@style/TextFieldInlineError"
-                            android:id="@+id/firstNameLayout"
                             tools:ignore="MissingConstraints">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -143,17 +148,16 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
 
-
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/lastNameLayout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/TextFieldInlineError"
+                            android:layout_marginStart="10sp"
                             android:layout_marginLeft="10sp"
                             android:layout_weight="1.2"
-                            android:id="@+id/lastNameLayout"
-                            tools:ignore="MissingConstraints"
-                            android:layout_marginStart="10sp">
+                            app:errorEnabled="true"
+                            app:errorTextAppearance="@style/TextFieldInlineError"
+                            tools:ignore="MissingConstraints">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/lastName"
@@ -167,13 +171,13 @@
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/email_registerLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:errorEnabled="true"
-                        tools:ignore="MissingConstraints"
                         app:errorTextAppearance="@style/TextFieldInlineError"
+                        tools:ignore="MissingConstraints"
                         tools:layout_editor_absoluteX="0dp"
-                        android:id="@+id/email_registerLayout"
                         tools:layout_editor_absoluteY="108dp">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -188,14 +192,12 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
 
-
-
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cin_registerLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:ignore="MissingConstraints"
-                        android:id="@+id/cin_registerLayout"
                         app:errorEnabled="true"
+                        tools:ignore="MissingConstraints"
 
                         tools:layout_editor_absoluteX="0dp"
                         tools:layout_editor_absoluteY="108dp">
@@ -206,13 +208,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/cin_number"
-                            android:maxLength="21"
                             android:inputType="textEmailAddress"
-                            android:maxLines="1"
-                            />
+                            android:maxLength="21"
+                            android:maxLines="1" />
                     </com.google.android.material.textfield.TextInputLayout>
-
-
 
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -238,15 +237,15 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
 
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/password_registerLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginVertical="0dp"
                         app:errorEnabled="true"
                         app:errorTextAppearance="@style/TextFieldInlineError"
-                        app:passwordToggleEnabled="true"
-                        android:layout_marginVertical="0dp">
+                        app:passwordToggleEnabled="true">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/password_register"
                             style="@style/TextFieldSmall"
@@ -260,18 +259,16 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
 
-
-
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/confirmPasswordLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginVertical="0dp"
                         app:errorEnabled="true"
-                        app:errorTextAppearance="@style/TextFieldInlineError"
 
-                        app:passwordToggleEnabled="true"
-                        android:layout_marginVertical="0dp">
+                        app:errorTextAppearance="@style/TextFieldInlineError"
+                        app:passwordToggleEnabled="true">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/confirmPassword"
                             style="@style/TextFieldSmall"
@@ -283,14 +280,14 @@
                             android:maxLines="1" />
 
 
-
                     </com.google.android.material.textfield.TextInputLayout>
+
                     <Button
                         android:id="@+id/registerButton"
                         android:layout_width="match_parent"
                         android:layout_height="60sp"
-                        android:layout_marginBottom="@dimen/title"
                         android:layout_marginHorizontal="@dimen/standard"
+                        android:layout_marginBottom="@dimen/title"
                         android:background="@drawable/shape2"
                         android:fontFamily="@font/happy_monkey"
                         android:text="@string/registerButton"
@@ -299,12 +296,13 @@
                         app:backgroundTint="@android:color/holo_green_light"
                         tools:ignore="MissingConstraints" />
                 </LinearLayout>
+
                 <ImageView
                     android:id="@+id/registerBackground"
                     android:layout_width="match_parent"
                     android:layout_height="300sp"
-                    android:src="@mipmap/registration_foreground"
-                    android:contentDescription="@string/createAccount" />
+                    android:contentDescription="@string/createAccount"
+                    android:src="@mipmap/registration_foreground" />
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

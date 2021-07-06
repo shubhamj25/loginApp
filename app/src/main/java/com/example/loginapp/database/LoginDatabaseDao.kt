@@ -3,7 +3,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 @Dao
-interface LoginDatabaseDao{
+interface  LoginDatabaseDao{
     @Insert
     fun insertUser(user:LoginEntity)
 
@@ -27,4 +27,10 @@ interface LoginDatabaseDao{
 
     @Query("SELECT * FROM registered_users_table")
     fun getAllUsers(): LiveData<MutableList<LoginEntity>>
+
+    @Query("SELECT * FROM registered_users_table WHERE email!=:email")
+    fun getAllUsersExcept(email:String): LiveData<MutableList<LoginEntity>>
+
+    @Query("SELECT COUNT(*) FROM registered_users_table")
+    fun getAllUsersCount(): Int
 }

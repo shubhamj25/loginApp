@@ -1,6 +1,8 @@
 package com.example.loginapp.screens.prelogin.fragments
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,7 @@ import com.example.loginapp.screens.prelogin.activity.PreLoginFragmentsActivity
 import com.example.loginapp.screens.prelogin.activity.PreLoginViewPagerActivity
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_register.*
+import kotlinx.android.synthetic.main.list_item.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,9 +30,10 @@ class RegisterFragment :Fragment(){
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?): View {
+        savedInstanceState: Bundle?
+    ): View {
         this.withViewPager = this.arguments?.getBoolean(getString(R.string.withViewPager)) ?: false
-        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_register,container,false)
+        binding=DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
         db= activity?.application?.let { getDatabaseInstance(it) }!!
         if(withViewPager){
             intent = Intent(activity?.application, PreLoginViewPagerActivity::class.java)
@@ -51,21 +55,63 @@ class RegisterFragment :Fragment(){
             (activity as PreLoginFragmentListener).navigateToLoginLayout(this)
         }
     }
-    private fun isResidentialFieldValidated(firstName:TextInputEditText, lastName:TextInputEditText, email:TextInputEditText, phone:TextInputEditText, password:TextInputEditText, confirmPassword:TextInputEditText): Boolean {
-        val countOfEmptyFields=countEmptyFields(arrayListOf(firstName.text.toString(),lastName.text.toString(),
-                email.text.toString(),phone.text.toString(),password.text.toString(),confirmPassword.text.toString()))
+    private fun isResidentialFieldValidated(
+        firstName: TextInputEditText,
+        lastName: TextInputEditText,
+        email: TextInputEditText,
+        phone: TextInputEditText,
+        password: TextInputEditText,
+        confirmPassword: TextInputEditText
+    ): Boolean {
+        val countOfEmptyFields=countEmptyFields(
+            arrayListOf(
+                firstName.text.toString(),
+                lastName.text.toString(),
+                email.text.toString(),
+                phone.text.toString(),
+                password.text.toString(),
+                confirmPassword.text.toString()
+            )
+        )
         when {
             countOfEmptyFields>=2 -> {
-                activity?.application?.showErrorSnackBar(registerScrollViewLayout, R.string.error_emptyFields)?.show()
+                activity?.application?.showErrorSnackBar(
+                    registerScrollViewLayout,
+                    R.string.error_emptyFields
+                )?.show()
                 return false
             }
             countOfEmptyFields==1 -> {
-                activity?.application?.setInLineEmptyError(firstNameLayout,firstName,R.string.error_emptyField)
-                activity?.application?.setInLineEmptyError(lastNameLayout,lastName,R.string.error_emptyField)
-                activity?.application?.setInLineEmptyError(email_registerLayout,email_register,R.string.error_emptyField)
-                activity?.application?.setInLineEmptyError(phoneLayout,phone,R.string.error_emptyField)
-                activity?.application?.setInLineEmptyError(password_registerLayout,password_register,R.string.error_emptyField)
-                activity?.application?.setInLineEmptyError(confirmPasswordLayout,confirmPassword,R.string.error_emptyField)
+                activity?.application?.setInLineEmptyError(
+                    firstNameLayout,
+                    firstName,
+                    R.string.error_emptyField
+                )
+                activity?.application?.setInLineEmptyError(
+                    lastNameLayout,
+                    lastName,
+                    R.string.error_emptyField
+                )
+                activity?.application?.setInLineEmptyError(
+                    email_registerLayout,
+                    email_register,
+                    R.string.error_emptyField
+                )
+                activity?.application?.setInLineEmptyError(
+                    phoneLayout,
+                    phone,
+                    R.string.error_emptyField
+                )
+                activity?.application?.setInLineEmptyError(
+                    password_registerLayout,
+                    password_register,
+                    R.string.error_emptyField
+                )
+                activity?.application?.setInLineEmptyError(
+                    confirmPasswordLayout,
+                    confirmPassword,
+                    R.string.error_emptyField
+                )
                 return false
             }
             countOfEmptyFields==0 -> {
@@ -81,8 +127,14 @@ class RegisterFragment :Fragment(){
                     password_registerLayout.error=getString(R.string.error_weakPassword)
                     return false
                 }
-                if(!confirmPassword.text.toString().equals(password.text.toString(),ignoreCase = false)){
-                    activity?.application?.showErrorSnackBar(registerScrollViewLayout,R.string.error_passwordsDoNoMatch)?.show()
+                if(!confirmPassword.text.toString().equals(
+                        password.text.toString(),
+                        ignoreCase = false
+                    )){
+                    activity?.application?.showErrorSnackBar(
+                        registerScrollViewLayout,
+                        R.string.error_passwordsDoNoMatch
+                    )?.show()
                     return false
                 }
                 return true
@@ -91,22 +143,64 @@ class RegisterFragment :Fragment(){
         }
     }
 
-    private fun isCommercialFieldValidated(businessName:TextInputEditText, email:TextInputEditText,cin:TextInputEditText, phone:TextInputEditText, password:TextInputEditText, confirmPassword:TextInputEditText): Boolean {
+    private fun isCommercialFieldValidated(
+        businessName: TextInputEditText,
+        email: TextInputEditText,
+        cin: TextInputEditText,
+        phone: TextInputEditText,
+        password: TextInputEditText,
+        confirmPassword: TextInputEditText
+    ): Boolean {
 
-        val countOfEmptyFields=countEmptyFields(arrayListOf(businessName.text.toString(),
-                email.text.toString(),cin.text.toString(),phone.text.toString(),password.text.toString(),confirmPassword.text.toString()))
+        val countOfEmptyFields=countEmptyFields(
+            arrayListOf(
+                businessName.text.toString(),
+                email.text.toString(),
+                cin.text.toString(),
+                phone.text.toString(),
+                password.text.toString(),
+                confirmPassword.text.toString()
+            )
+        )
         when {
             countOfEmptyFields>=2 -> {
-                activity?.application?.showErrorSnackBar(registerScrollViewLayout, R.string.error_emptyFields)?.show()
+                activity?.application?.showErrorSnackBar(
+                    registerScrollViewLayout,
+                    R.string.error_emptyFields
+                )?.show()
                 return false
             }
             countOfEmptyFields==1 -> {
-                activity?.application?.setInLineEmptyError(businessNameLayout,businessName,R.string.error_emptyField)
-                activity?.application?.setInLineEmptyError(email_registerLayout,email_register,R.string.error_emptyField)
-                activity?.application?.setInLineEmptyError(cin_registerLayout,cin_register,R.string.error_emptyField)
-                activity?.application?.setInLineEmptyError(phoneLayout,phone,R.string.error_emptyField)
-                activity?.application?.setInLineEmptyError(password_registerLayout,password_register,R.string.error_emptyField)
-                activity?.application?.setInLineEmptyError(confirmPasswordLayout,confirmPassword,R.string.error_emptyField)
+                activity?.application?.setInLineEmptyError(
+                    businessNameLayout,
+                    businessName,
+                    R.string.error_emptyField
+                )
+                activity?.application?.setInLineEmptyError(
+                    email_registerLayout,
+                    email_register,
+                    R.string.error_emptyField
+                )
+                activity?.application?.setInLineEmptyError(
+                    cin_registerLayout,
+                    cin_register,
+                    R.string.error_emptyField
+                )
+                activity?.application?.setInLineEmptyError(
+                    phoneLayout,
+                    phone,
+                    R.string.error_emptyField
+                )
+                activity?.application?.setInLineEmptyError(
+                    password_registerLayout,
+                    password_register,
+                    R.string.error_emptyField
+                )
+                activity?.application?.setInLineEmptyError(
+                    confirmPasswordLayout,
+                    confirmPassword,
+                    R.string.error_emptyField
+                )
                 return false
             }
             countOfEmptyFields==0 -> {
@@ -126,8 +220,14 @@ class RegisterFragment :Fragment(){
                     cin_registerLayout.error=getString(R.string.error_invalidCIN)
                     return false
                 }
-                if(!confirmPassword.text.toString().equals(password.text.toString(),ignoreCase = false)){
-                    activity?.application?.showErrorSnackBar(registerScrollViewLayout,R.string.error_passwordsDoNoMatch)?.show()
+                if(!confirmPassword.text.toString().equals(
+                        password.text.toString(),
+                        ignoreCase = false
+                    )){
+                    activity?.application?.showErrorSnackBar(
+                        registerScrollViewLayout,
+                        R.string.error_passwordsDoNoMatch
+                    )?.show()
                     return false
                 }
                 return true
@@ -137,15 +237,27 @@ class RegisterFragment :Fragment(){
     }
 
     private fun setView(){
-        val itemList=arrayListOf(getString(R.string.customerType_residential),getString(R.string.customerType_commercial))
-        val adapter = activity?.applicationContext?.let { ArrayAdapter(it, R.layout.list_item, itemList) }
+        val itemList=arrayListOf(
+            getString(R.string.customerType_residential),
+            getString(R.string.customerType_commercial)
+        )
+        val adapter = activity?.applicationContext?.let { ArrayAdapter(
+            it,
+            R.layout.list_item,
+            itemList
+        ) }
         binding.customerTypeDropdown.setAdapter(adapter)
-        binding.customerTypeDropdown.setOnItemClickListener { _,_, position,_ ->
+        binding.customerTypeDropdown.setOnItemClickListener { _, _, position, _ ->
             when(itemList[position]) {
                 getString(R.string.customerType_commercial) -> viewConstraints(getString(R.string.customerType_commercial))
                 getString(R.string.customerType_residential) -> viewConstraints(getString(R.string.customerType_residential))
                 else ->afterCustomerTypeSelected.visibility=View.GONE
             }
+        }
+        val outValue = TypedValue()
+        requireActivity().theme.resolveAttribute(R.attr.themeName, outValue, true)
+        if ("dark".contentEquals(outValue.string)) {
+            binding.customerTypeDropdown.setDropDownBackgroundResource(R.color.whiteSmoke)
         }
     }
 
@@ -161,59 +273,101 @@ class RegisterFragment :Fragment(){
 
         registerButton.setOnClickListener {
             when(customerType){
-                getString(R.string.customerType_residential) ->{
-                    if(isResidentialFieldValidated(firstName,lastName,email_register,phone,password_register,confirmPassword)){
+                getString(R.string.customerType_residential) -> {
+                    if (isResidentialFieldValidated(
+                            firstName,
+                            lastName,
+                            email_register,
+                            phone,
+                            password_register,
+                            confirmPassword
+                        )
+                    ) {
                         uiScope.launch {
 
                             if (checkBeforeRegister(email_register.text.toString()) != null) {
-                                activity?.showDialog({ dialog, _ -> dialog.cancel() },
-                                        R.string.registrationDialogTitle,
-                                        R.string.alreadyRegisteredEntryFound,
-                                        R.string.dialogPositive)?.show()
-                            }
-                            else {
+                                activity?.showDialog(
+                                    { dialog, _ -> dialog.cancel() },
+                                    R.string.registrationDialogTitle,
+                                    R.string.alreadyRegisteredEntryFound,
+                                    R.string.dialogPositive
+                                )?.show()
+                            } else {
 
-                                insert(db, firstName.text.toString(), lastName.text.toString(), "", email_register.text.toString(), "",
-                                        phone.text.toString(), password_register.text.toString(), getString(R.string.customerType_residential))
+                                insert(
+                                    db,
+                                    firstName.text.toString(),
+                                    lastName.text.toString(),
+                                    "",
+                                    email_register.text.toString(),
+                                    "",
+                                    phone.text.toString(),
+                                    password_register.text.toString(),
+                                    getString(
+                                        R.string.customerType_residential
+                                    )
+                                )
 
                                 activity?.showDialog(
                                     { _, _ ->
-                                    startActivity(intent)
-                                    activity?.finish()
-                                    //resetRegisterScreen()
-                                    //Navigation.findNavController(registerScrollViewLayout).navigate(R.id.action_registerFragment_to_loginFragment)
+                                        startActivity(intent)
+                                        activity?.finish()
+                                        //resetRegisterScreen()
+                                        //Navigation.findNavController(registerScrollViewLayout).navigate(R.id.action_registerFragment_to_loginFragment)
                                     },
                                     { dialog, _ -> dialog.cancel() },
                                     R.string.registrationDialogTitle,
                                     R.string.residentialRegistrationSuccessful,
-                                    R.string.dialogPositive, R.string.dialogNegative)?.show()
+                                    R.string.dialogPositive, R.string.dialogNegative
+                                )?.show()
                             }
                         }
                     }
                 }
-                getString(R.string.customerType_commercial)->{
-                    if(isCommercialFieldValidated(businessName,email_register,cin_register,phone,password_register,confirmPassword)){
+                getString(R.string.customerType_commercial) -> {
+                    if (isCommercialFieldValidated(
+                            businessName,
+                            email_register,
+                            cin_register,
+                            phone,
+                            password_register,
+                            confirmPassword
+                        )
+                    ) {
                         uiScope.launch {
-                            if(checkBeforeRegister(email_register.text.toString())!=null){
-                                activity?.showDialog({ dialog, _ -> dialog.cancel() },
-                                        R.string.registrationDialogTitle,
-                                        R.string.alreadyRegisteredEntryFound,
-                                        R.string.dialogPositive)?.show()
-                            }
-                            else {
-                                insert(db,"","",businessName.text.toString(),email_register.text.toString(),cin_register.text.toString(),
-                                        phone.text.toString(),password_register.text.toString(),getString(R.string.customerType_commercial))
+                            if (checkBeforeRegister(email_register.text.toString()) != null) {
                                 activity?.showDialog(
-                                    {    _, _ ->
-                                    startActivity(intent)
-                                    activity?.finish()
-                                    //resetRegisterScreen()
-                                    //Navigation.findNavController(registerScrollViewLayout).navigate(R.id.action_registerFragment_to_loginFragment)
+                                    { dialog, _ -> dialog.cancel() },
+                                    R.string.registrationDialogTitle,
+                                    R.string.alreadyRegisteredEntryFound,
+                                    R.string.dialogPositive
+                                )?.show()
+                            } else {
+                                insert(
+                                    db,
+                                    "",
+                                    "",
+                                    businessName.text.toString(),
+                                    email_register.text.toString(),
+                                    cin_register.text.toString(),
+                                    phone.text.toString(),
+                                    password_register.text.toString(),
+                                    getString(
+                                        R.string.customerType_commercial
+                                    )
+                                )
+                                activity?.showDialog(
+                                    { _, _ ->
+                                        startActivity(intent)
+                                        activity?.finish()
+                                        //resetRegisterScreen()
+                                        //Navigation.findNavController(registerScrollViewLayout).navigate(R.id.action_registerFragment_to_loginFragment)
                                     },
                                     { dialog, _ -> dialog.cancel() },
                                     R.string.registrationDialogTitle,
                                     R.string.commercialRegistrationSuccessful,
-                                    R.string.dialogPositive,R.string.dialogNegative)?.show()
+                                    R.string.dialogPositive, R.string.dialogNegative
+                                )?.show()
                             }
                         }
 
@@ -223,13 +377,34 @@ class RegisterFragment :Fragment(){
         }
     }
 
-    private suspend fun insert(db:LoginDatabase,firstName:String, lastName:String, businessName: String, email:String, cin:String, phone:String, password:String, customerType:String){
+    private suspend fun insert(
+        db: LoginDatabase,
+        firstName: String,
+        lastName: String,
+        businessName: String,
+        email: String,
+        cin: String,
+        phone: String,
+        password: String,
+        customerType: String
+    ){
         withContext(Dispatchers.IO) {
-            db.loginDatabaseDao.insertUser(LoginEntity(firstName=firstName,lastName = lastName,businessName = businessName,email = email,cin = cin,phone = phone,password = password,customerType = customerType))
+            db.loginDatabaseDao.insertUser(
+                LoginEntity(
+                    firstName = firstName,
+                    lastName = lastName,
+                    businessName = businessName,
+                    email = email,
+                    cin = cin,
+                    phone = phone,
+                    password = password,
+                    customerType = customerType
+                )
+            )
         }
     }
 
-    private suspend fun checkBeforeRegister(email:String):LoginEntity?{
+    private suspend fun checkBeforeRegister(email: String):LoginEntity?{
         return withContext(Dispatchers.IO) {
             val res=db.loginDatabaseDao.getByEmail(email)
             res

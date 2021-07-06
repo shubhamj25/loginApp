@@ -1,4 +1,5 @@
 package com.example.loginapp.screens.prelogin.fragments
+
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -19,25 +20,31 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class LoginFragment : Fragment() {
-    private lateinit var sharedPreferences:SharedPreferences
-    private lateinit var db:LoginDatabase
-    private var withViewPager:Boolean = false
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        sharedPreferences= getSharedPreferenceInstance(requireNotNull(this.activity).application)
-        db= getDatabaseInstance(requireNotNull(this.activity).application)
-        this.withViewPager= this.arguments?.getBoolean(getString(R.string.withViewPager)) ?: false
-        val binding:FragmentLoginBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_login, container, false)
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var db: LoginDatabase
+    private var withViewPager: Boolean = false
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        sharedPreferences = getSharedPreferenceInstance(requireNotNull(this.activity).application)
+        db = getDatabaseInstance(requireNotNull(this.activity).application)
+        this.withViewPager = this.arguments?.getBoolean(getString(R.string.withViewPager)) ?: false
+        val binding: FragmentLoginBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_login, container, false
+        )
         setListenerOnWidgets(binding)
-        if(this.withViewPager) {
-            binding.createAccount.text= getString(R.string.swipeToSignUp)
-            binding.createAccount.setOnClickListener{}
-            binding.forgotPassword.setOnClickListener{}
+        if (this.withViewPager) {
+            binding.createAccount.text = getString(R.string.swipeToSignUp)
+            binding.createAccount.setOnClickListener {}
+            binding.forgotPassword.setOnClickListener {}
         }
         return binding.root
     }
+
     private fun setListenerOnWidgets(binding: FragmentLoginBinding) {
-        binding.forgotPassword.setOnClickListener{
+        binding.forgotPassword.setOnClickListener {
             (activity as PreLoginFragmentListener).navigateToForgotPasswordLayout(this)
             //Navigation.findNavController(constraintLayout).navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
         }
@@ -46,36 +53,43 @@ class LoginFragment : Fragment() {
             //Navigation.findNavController(constraintLayout).navigate(R.id.action_loginFragment_to_registerFragment)
         }
         binding.loginButton.setOnClickListener {
-            val isAValidEmail:Boolean= email.text.toString().isAValidEmail()
-            val isAValidPassword:Boolean =password.text.toString().isAValidPassword()
-            if( isAValidEmail && isAValidPassword ){
+            val isAValidEmail: Boolean = email.text.toString().isAValidEmail()
+            val isAValidPassword: Boolean = password.text.toString().isAValidPassword()
+            if (isAValidEmail && isAValidPassword) {
                 uiScope.launch {
-                    val foundMatch=checkBeforeLogin(email.text.toString(),password.text.toString())
-                    if(foundMatch!=null){
-                        val intent= Intent(activity?.application, HomeActivity::class.java)
-                        val bundle=Bundle()
+                    val foundMatch =
+                        checkBeforeLogin(email.text.toString(), password.text.toString())
+                    if (foundMatch != null) {
+                        val intent = Intent(activity?.application, HomeActivity::class.java)
+                        val bundle = Bundle()
                         bundle.putString(getString(R.string.bundleArgEmail), foundMatch.email)
                         intent.putExtra(getString(R.string.bundleKey), bundle)
                         rememberUser(sharedPreferences)
                         clearErrorOnFields()
                         clearFields()
-                        activity?.showDialog({ _, _ -> startActivity(intent)},{ dialog, _ -> dialog.cancel() },
-                            R.string.dialog_login_title,R.string.loginSuccessful,
-                            R.string.dialogPositive,R.string.dialogNegative)?.show()
-                    }
-                    else{
-                        activity?.showDialog({ dialog, _ -> dialog.cancel() },
-                            R.string.dialog_login_title,R.string.invalidCredentials,
-                            R.string.dialogPositive)?.show()
+                        activity?.showDialog(
+                            { _, _ -> startActivity(intent) },
+                            { dialog, _ -> dialog.cancel() },
+                            R.string.dialog_login_title,
+                            R.string.loginSuccessful,
+                            R.string.dialogPositive,
+                            R.string.dialogNegative
+                        )?.show()
+                        getSharedPreferenceInstance(requireActivity().application).edit()
+                            .putString(getString(R.string.sh_email), foundMatch.email).apply()
+                    } else {
+                        activity?.showDialog(
+                            { dialog, _ -> dialog.cancel() },
+                            R.string.dialog_login_title, R.string.invalidCredentials,
+                            R.string.dialogPositive
+                        )?.show()
                     }
                 }
-            }
-            else{
-                if(!isAValidEmail){
-                    emailLoginLayout.error=getString(R.string.error_invalidEmail)
-                }
-                else if(!isAValidPassword){
-                    password_LoginLayout.error=getString(R.string.error_password)
+            } else {
+                if (!isAValidEmail) {
+                    emailLoginLayout.error = getString(R.string.error_invalidEmail)
+                } else if (!isAValidPassword) {
+                    password_LoginLayout.error = getString(R.string.error_password)
                 }
             }
         }
@@ -87,42 +101,43 @@ class LoginFragment : Fragment() {
     }
 
     private fun prepopulate(sharedPreferences: SharedPreferences) {
-        val prefsEmail:String = sharedPreferences.getString(getString(R.string.sharedPrefsEmail),"").toString()
-        val prefsPassword:String= sharedPreferences.getString(getString(R.string.sharedPrefsPassword),"").toString()
-        if(prefsEmail.isNotEmpty() && prefsPassword.isNotEmpty()){
+        val prefsEmail: String =
+            sharedPreferences.getString(getString(R.string.sharedPrefsEmail), "").toString()
+        val prefsPassword: String =
+            sharedPreferences.getString(getString(R.string.sharedPrefsPassword), "").toString()
+        if (prefsEmail.isNotEmpty() && prefsPassword.isNotEmpty()) {
             email.setText(prefsEmail)
             password.setText(prefsPassword)
         }
     }
 
-    private fun rememberUser(sharedPreferences: SharedPreferences){
-        val sh= sharedPreferences.edit()
-        if(rememberMe.isChecked){
-            sh.putString(getString(R.string.sharedPrefsEmail),email.text.toString())
-            sh.putString(getString(R.string.sharedPrefsPassword),password.text.toString())
+    private fun rememberUser(sharedPreferences: SharedPreferences) {
+        val sh = sharedPreferences.edit()
+        if (rememberMe.isChecked) {
+            sh.putString(getString(R.string.sharedPrefsEmail), email.text.toString())
+            sh.putString(getString(R.string.sharedPrefsPassword), password.text.toString())
             sh.apply()
-        }
-        else{
+        } else {
             sh.remove(getString(R.string.sharedPrefsEmail))
             sh.remove(getString(R.string.sharedPrefsPassword))
             sh.apply()
         }
     }
 
-    private suspend fun checkBeforeLogin(email:String, password:String): LoginEntity?{
-        return withContext(Dispatchers.IO){
-            val res: LoginEntity?=db.loginDatabaseDao.checkCredentials(email,password)
+    private suspend fun checkBeforeLogin(email: String, password: String): LoginEntity? {
+        return withContext(Dispatchers.IO) {
+            val res: LoginEntity? = db.loginDatabaseDao.checkCredentials(email, password)
             res
         }
     }
 
-    private fun clearFields(){
+    private fun clearFields() {
         email.text?.clear()
         password.text?.clear()
     }
 
-    private fun clearErrorOnFields(){
-        emailLoginLayout.error=null
-        password_LoginLayout.error=null
+    private fun clearErrorOnFields() {
+        emailLoginLayout.error = null
+        password_LoginLayout.error = null
     }
 }

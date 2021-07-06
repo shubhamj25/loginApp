@@ -76,6 +76,11 @@
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_gravity="end"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_gravity="end"
@@ -85,6 +90,20 @@
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:layout_height="wrap_content" />
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:backgroundTint="@color/deepOrange"
+                app:iconTint="@color/black"
+                app:icon="@android:drawable/stat_notify_chat"
+                android:id="@+id/residential_Chat"
+                android:fontFamily="@font/happy_monkey"
+                android:textSize="@dimen/standard"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
 
 
     </androidx.cardview.widget.CardView>

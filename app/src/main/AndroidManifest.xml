@@ -26,7 +26,9 @@
         <activity android:name=".screens.prelogin.activity.PreLoginFragmentsActivity"/>
         <activity android:name=".screens.prelogin.activity.PreLoginViewPagerActivity"/>
         <activity android:name=".BaseActivity"/>
+        <activity android:name=".screens.usage.UsageActivity"/>
         <activity android:name=".screens.home.LocationActivity"/>
+        <activity android:name=".screens.chat.ChatWindowActivity"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

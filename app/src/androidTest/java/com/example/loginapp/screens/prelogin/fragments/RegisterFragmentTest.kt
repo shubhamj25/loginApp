@@ -1,7 +1,6 @@
 package com.example.loginapp.screens.prelogin.fragments
 
 import android.os.SystemClock.sleep
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -28,10 +27,8 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.Description
 import org.junit.runner.RunWith
 
-//app/build/reports/tests/debug/
 @RunWith(AndroidJUnit4ClassRunner::class)
 class RegisterFragmentTest {
     private lateinit var scenario: FragmentScenario<RegisterFragment>
@@ -94,61 +91,134 @@ class RegisterFragmentTest {
     }
 
     @Test
-    fun registrationCase1_Residential() {
+    fun registrationCase_Residential_Success() {
+        val noOfUsers = dao.getAllUsersCount()
+        val userObject = LoginEntity(
+            firstName = "Laxman",
+            lastName = "Gupta",
+            email = "laxman@gmail.com",
+            phone = "9276276384",
+            password = "1234567890",
+            customerType = "Residential",
+            businessName = "",
+            cin = ""
+        )
         onView(withId(R.id.customerTypeDropdown)).perform(click())
-        onData(equalTo("Residential")).inRoot(RootMatchers.isPlatformPopup()).perform(click())
+        onData(equalTo(userObject.customerType)).inRoot(RootMatchers.isPlatformPopup())
+            .perform(click())
         //perform
-        onView(withId(R.id.firstName)).perform(typeText("Shubhi"), closeSoftKeyboard())
-        onView(withId(R.id.lastName)).perform(typeText("Jain"), closeSoftKeyboard())
+        onView(withId(R.id.firstName)).perform(typeText(userObject.firstName), closeSoftKeyboard())
+        onView(withId(R.id.lastName)).perform(typeText(userObject.lastName), closeSoftKeyboard())
         onView(withId(R.id.email_register)).perform(
-            typeText("sjain2092@gmail.com"),
+            typeText(userObject.email),
             closeSoftKeyboard()
         )
         onView(withId(R.id.phone)).perform(
-            typeText("9999292135"),
+            typeText(userObject.phone),
             closeSoftKeyboard()
         )
         onView(withId(R.id.password_register)).perform(
-            typeText("1234567890"),
+            typeText(userObject.password),
             closeSoftKeyboard()
         )
         onView(withId(R.id.confirmPassword)).perform(
-            typeText("1234567890"),
+            typeText(userObject.password),
             closeSoftKeyboard()
         )
         onView(withId(R.id.registerButton)).perform(click())
         onView(withText("Okay")).inRoot(isDialog()).check(matches(isDisplayed())).perform(click())
         //verify
-         val testUser = dao.getByEmail("sjain2092@gmail.com")
-         Assert.assertEquals("sjain2092@gmail.com", (testUser as LoginEntity).email)
+        val testUser = dao.getByEmail(userObject.email)
+        if (testUser != null) {
+            Assert.assertEquals(
+                "Registration Failed: Email Already Registered",
+                dao.getAllUsersCount(),
+                noOfUsers + 1
+            )
+        } else {
+            Assert.assertEquals(
+                "Registration Failed: Email Not Found",
+                dao.getAllUsersCount(),
+                noOfUsers + 1
+            )
+        }
+
     }
 
     @Test
-    fun registrationCase2_Residential() {
+    fun registrationCase_Residential_FirstNameNull() {
+        val userObject = LoginEntity(
+            firstName = "",
+            lastName = "Gupta",
+            email = "sita12@gmail.com",
+            phone = "9276276384",
+            password = "1234567890",
+            customerType = "Residential",
+            businessName = "",
+            cin = ""
+        )
         onView(withId(R.id.customerTypeDropdown)).perform(click())
-        onData(equalTo("Residential")).inRoot(RootMatchers.isPlatformPopup()).perform(click())
+        onData(equalTo(userObject.customerType)).inRoot(RootMatchers.isPlatformPopup())
+            .perform(click())
         //perform
-        onView(withId(R.id.firstName)).perform(typeText(""), closeSoftKeyboard())
-        onView(withId(R.id.lastName)).perform(typeText("Jain"), closeSoftKeyboard())
+        onView(withId(R.id.firstName)).perform(typeText(userObject.firstName), closeSoftKeyboard())
+        onView(withId(R.id.lastName)).perform(typeText(userObject.lastName), closeSoftKeyboard())
         onView(withId(R.id.email_register)).perform(
-            typeText("sjain2092@gmail.com"),
+            typeText(userObject.email),
             closeSoftKeyboard()
         )
         onView(withId(R.id.phone)).perform(
-            typeText("9999292135"),
+            typeText(userObject.phone),
             closeSoftKeyboard()
         )
         onView(withId(R.id.password_register)).perform(
-            typeText("1234567890"),
+            typeText(userObject.password),
             closeSoftKeyboard()
         )
         onView(withId(R.id.confirmPassword)).perform(
-            typeText("1234567890"),
+            typeText(userObject.password),
             closeSoftKeyboard()
         )
         onView(withId(R.id.registerButton)).perform(click())
         //verify
         onView(withId(R.id.firstNameLayout)).check(matches(hasTextInputLayoutErrorText("Empty Field") as Matcher<in View>?))
+    }
+
+    @Test
+    fun registrationCase_Residential_PasswordsDoNotMatch() {
+        val userObject = LoginEntity(
+            firstName = "Sita",
+            lastName = "Gupta",
+            email = "sita1@gmail.com",
+            phone = "9276276384",
+            password = "1234567890",
+            customerType = "Residential",
+            businessName = "",
+            cin = ""
+        )
+        onView(withId(R.id.customerTypeDropdown)).perform(click())
+        onData(equalTo(userObject.customerType)).inRoot(RootMatchers.isPlatformPopup())
+            .perform(click())
+        //perform
+        onView(withId(R.id.firstName)).perform(typeText(userObject.firstName), closeSoftKeyboard())
+        onView(withId(R.id.lastName)).perform(typeText(userObject.lastName), closeSoftKeyboard())
+        onView(withId(R.id.email_register)).perform(
+            typeText(userObject.email),
+            closeSoftKeyboard()
+        )
+        onView(withId(R.id.phone)).perform(
+            typeText(userObject.phone),
+            closeSoftKeyboard()
+        )
+        onView(withId(R.id.password_register)).perform(
+            typeText(userObject.password),
+            closeSoftKeyboard()
+        )
+        onView(withId(R.id.confirmPassword)).perform(
+            typeText("123456789"),
+            closeSoftKeyboard()
+        )
+        onView(withId(R.id.registerButton)).perform(click())
     }
 
     private fun hasTextInputLayoutErrorText(expectedErrorText: String): TypeSafeMatcher<View> {

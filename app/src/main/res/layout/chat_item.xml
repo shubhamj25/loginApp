@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/chatItemLinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="horizontal">
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/CustomCardViewStyle1"
+        android:id="@+id/cardView"
+        app:layout_constraintWidth_max="@dimen/maxWidth_chatItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_8dp"
+        android:layout_marginVertical="@dimen/margin_4dp"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/chat_item_shape">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/deleteMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_8dp"
+                android:backgroundTint="@color/white"
+                android:src="@android:drawable/ic_menu_delete"
+                app:fabSize="mini"
+                app:maxImageSize="@dimen/ic_size_medium" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_40sp"
+                android:layout_marginLeft="@dimen/margin_40sp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/chatItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableTint="@color/white"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/happy_monkey"
+                    android:gravity="end"
+                    android:inputType="textMultiLine"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="@dimen/margin_8dp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_16sp"
+                    tools:ignore="TextViewEdits" />
+
+                <TextView
+                    android:id="@+id/chatItemAuthor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/happy_monkey"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:paddingHorizontal="@dimen/text_size_18sp"
+                    android:paddingBottom="@dimen/margin_8dp"
+                    android:text="@string/sample_text_for_testing"
+                    android:textAppearance="?attr/textAppearanceSubtitle1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/standard" />
+            </LinearLayout>
+        </FrameLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>
+

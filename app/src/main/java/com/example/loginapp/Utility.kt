@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.graphics.Color
-import android.util.TypedValue
+import android.os.AsyncTask
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
@@ -24,17 +24,18 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlin.math.sqrt
+
 val dToPt= LocationActivity.EQUIVALENT_TO_A_KM * 2 * sqrt(2F)
-fun squareMap(myLocation:LatLng): MutableList<LatLng> {
+fun squareMap(myLocation: LatLng): MutableList<LatLng> {
     return mutableListOf(
-            LatLng(myLocation.latitude+dToPt,myLocation.longitude+dToPt),
-            LatLng(myLocation.latitude-dToPt,myLocation.longitude+dToPt),
-            LatLng(myLocation.latitude-dToPt,myLocation.longitude-dToPt),
-            LatLng(myLocation.latitude+dToPt,myLocation.longitude-dToPt)
+        LatLng(myLocation.latitude + dToPt, myLocation.longitude + dToPt),
+        LatLng(myLocation.latitude - dToPt, myLocation.longitude + dToPt),
+        LatLng(myLocation.latitude - dToPt, myLocation.longitude - dToPt),
+        LatLng(myLocation.latitude + dToPt, myLocation.longitude - dToPt)
     )
 }
 
-fun showSnackBarOnTop(contextView: View,activity: Activity,message: Int,color: Int):Snackbar{
+fun showSnackBarOnTop(contextView: View, activity: Activity, message: Int, color: Int):Snackbar{
     val snack = Snackbar.make(contextView, activity.getString(message), Snackbar.LENGTH_LONG)
     val view = snack.view
     val params = view.layoutParams as FrameLayout.LayoutParams
@@ -44,9 +45,12 @@ fun showSnackBarOnTop(contextView: View,activity: Activity,message: Int,color: I
     return snack
 }
 
-var uiScope = CoroutineScope(Dispatchers.Main +  Job())
+var uiScope = CoroutineScope(Dispatchers.Main + Job())
 fun getSharedPreferenceInstance(application: Application):SharedPreferences{
-    return application.getSharedPreferences(application.getString(R.string.myPrefs), Context.MODE_PRIVATE)
+    return application.getSharedPreferences(
+        application.getString(R.string.myPrefs),
+        Context.MODE_PRIVATE
+    )
 }
 
 fun getLinearLayoutManager(application: Application): LinearLayoutManager {
@@ -59,9 +63,11 @@ fun clearSharedPreferences(sharedPreferences: SharedPreferences){
 }
 
 fun getDatabaseInstance(application: Application):LoginDatabase{
-    return Room.databaseBuilder(application,
+    return Room.databaseBuilder(
+        application,
         LoginDatabase::class.java,
-        application.resources.getString(R.string.databaseName)).build()
+        application.resources.getString(R.string.databaseName)
+    ).build()
 
 }
 
@@ -83,25 +89,47 @@ fun countEmptyFields(array: ArrayList<String>):Int{
     return count
 }
 
-fun AppCompatActivity.showDialog(positiveAction: DialogInterface.OnClickListener?=null,negativeAction:DialogInterface.OnClickListener, title:Int, message:Int, positiveButton:Int, negativeButton:Int): AlertDialog.Builder? {
+fun AppCompatActivity.showDialog(
+    positiveAction: DialogInterface.OnClickListener? = null,
+    negativeAction: DialogInterface.OnClickListener,
+    title: Int,
+    message: Int,
+    positiveButton: Int,
+    negativeButton: Int
+): AlertDialog.Builder? {
     return AlertDialog.Builder(this).setMessage(getString(message)).setPositiveButton(
-            positiveButton, positiveAction).setNegativeButton(negativeButton,negativeAction)
+        positiveButton, positiveAction
+    ).setNegativeButton(negativeButton, negativeAction)
             .setTitle(getString(title))
 }
 
-fun FragmentActivity.showDialog(positiveAction: DialogInterface.OnClickListener?=null,negativeAction:DialogInterface.OnClickListener, title:Int, message:Int, positiveButton:Int, negativeButton:Int): AlertDialog.Builder? {
+fun FragmentActivity.showDialog(
+    positiveAction: DialogInterface.OnClickListener? = null,
+    negativeAction: DialogInterface.OnClickListener,
+    title: Int,
+    message: Int,
+    positiveButton: Int,
+    negativeButton: Int
+): AlertDialog.Builder? {
     return AlertDialog.Builder(this).setMessage(getString(message)).setPositiveButton(
-        positiveButton, positiveAction).setNegativeButton(negativeButton,negativeAction)
+        positiveButton, positiveAction
+    ).setNegativeButton(negativeButton, negativeAction)
         .setTitle(getString(title))
 }
 
-fun FragmentActivity.showDialog(positiveAction: DialogInterface.OnClickListener?, title:Int, message:Int, positiveButton:Int): AlertDialog.Builder? {
+fun FragmentActivity.showDialog(
+    positiveAction: DialogInterface.OnClickListener?,
+    title: Int,
+    message: Int,
+    positiveButton: Int
+): AlertDialog.Builder? {
     return AlertDialog.Builder(this).setMessage(getString(message)).setPositiveButton(
-        positiveButton, positiveAction).setTitle(getString(title))
+        positiveButton, positiveAction
+    ).setTitle(getString(title))
 }
 
 fun Application.showErrorSnackBar(view: View, message: Int): Snackbar {
-    return Snackbar.make(view,getString(message), Snackbar.LENGTH_LONG)
+    return Snackbar.make(view, getString(message), Snackbar.LENGTH_LONG)
         .setBackgroundTint(Color.parseColor(getString(R.string.deepRed))).setTextColor(Color.WHITE)
 }
 
@@ -114,8 +142,23 @@ fun String.isAValidEmail(): Boolean {
     return matches(regex.toRegex())
 }
 
-fun Application.setInLineEmptyError(textInputLayout: TextInputLayout, textInputEditText: TextInputEditText, errorMessage:Int){
+fun Application.setInLineEmptyError(
+    textInputLayout: TextInputLayout,
+    textInputEditText: TextInputEditText,
+    errorMessage: Int
+){
     if(textInputEditText.text.toString().isEmpty()) {
         textInputLayout.error=getString(errorMessage)
+    }
+}
+
+fun itos(number:Int):String{
+    return number.toString()
+}
+
+class doAsync(val handler: () -> Unit) : AsyncTask<Void, Void, Void>() {
+    override fun doInBackground(vararg params: Void?): Void? {
+        handler()
+        return null
     }
 }

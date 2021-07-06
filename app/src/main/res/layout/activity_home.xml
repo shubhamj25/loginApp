@@ -1,62 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_margin="@dimen/standard"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.LoginApp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
+        android:id="@+id/homeActivityLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="5"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/tv1"
-            android:layout_width="wrap_content"
-            android:layout_weight="5"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/happy_monkey"
-            android:text="@string/hello"
-            android:textSize="@dimen/subPara"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.086"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.056" />
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/locateMeFab"
-            app:maxImageSize="@dimen/fabIconSize"
-            android:tint="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_marginHorizontal="@dimen/standard"
-            android:backgroundTint="@color/windowsBlue"
-            android:layout_gravity="end"
-            app:elevation="6dp"
-            android:src="@android:drawable/ic_menu_mylocation"
-            android:layout_height="wrap_content"/>
+            android:orientation="horizontal"
+            android:background="@drawable/rounded_rectange"
+            android:weightSum="5">
+
+            <TextView
+                android:id="@+id/tv1"
+                android:layout_marginVertical="@dimen/standard"
+                android:layout_marginHorizontal="@dimen/title"
+                android:layout_width="wrap_content"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:fontFamily="@font/happy_monkey"
+                android:text="@string/hello"
+                android:textSize="@dimen/subPara"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.086"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.056" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/locateMeFab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/standard"
+                android:backgroundTint="@color/white"
+                android:src="@android:drawable/ic_menu_mylocation"
+                app:elevation="6dp"
+                app:maxImageSize="@dimen/fabIconSize" />
+        </LinearLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/currentUsageChart"
+            android:paddingBottom="20sp"
+            android:layout_margin="@dimen/vSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/vSmall"
+                android:fontFamily="@font/happy_monkey"
+                android:layout_margin="@dimen/standard"
+                android:text="@string/all_users"
+                android:textSize="@dimen/buttonText"
+                android:textStyle="bold" />
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/userListProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/vSmall"
+                android:layout_margin="@dimen/subTitle" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/userList"
+                android:layout_margin="@dimen/standard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+        </LinearLayout>
+
     </LinearLayout>
 
-    <TextView
-        android:layout_marginVertical="@dimen/vSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/buttonText"
-        android:fontFamily="@font/happy_monkey"
-        android:textStyle="bold"
-        android:text="@string/all_users"
-        />
-
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/vSmall"
-        android:id="@+id/userListProgressBar"
-        android:layout_margin="@dimen/subTitle"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:id="@+id/userList"
-        android:visibility="gone"
-        android:layout_height="wrap_content"
-    />
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>

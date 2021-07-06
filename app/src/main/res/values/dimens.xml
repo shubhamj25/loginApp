@@ -8,5 +8,20 @@
     <dimen name="subTitle">20sp</dimen>
     <dimen name="subPara">16sp</dimen>
     <dimen name="snippet">14sp</dimen>
-    <dimen name="fabIconSize">35dp</dimen>
+    <dimen name="fabIconSize">30dp</dimen>
+    <dimen name="textInputHeight">60sp</dimen>
+    <dimen name="margin_8dp">8sp</dimen>
+    <dimen name="text_size_25sp">25sp</dimen>
+    <dimen name="margin_4dp">4dp</dimen>
+    <dimen name="margin_15dp">15dp</dimen>
+    <dimen name="text_size_18sp">18sp</dimen>
+    <dimen name="margin_0dp">0dp</dimen>
+    <dimen name="ic_size">35sp</dimen>
+    <dimen name="ic_size_medium">30sp</dimen>
+    <dimen name="text_size_16sp">16sp</dimen>
+    <dimen name="margin_40sp">40sp</dimen>
+    <dimen name="margin_50sp">50sp</dimen>
+    <dimen name="margin_45sp">45sp</dimen>
+    <dimen name="maxWidth_chatItem">310dp</dimen>
+    <dimen name="margin_20dp">20sp</dimen>
 </resources>

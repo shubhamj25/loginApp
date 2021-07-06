@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        app:cardElevation="@dimen/vSmall"
+        app:cardCornerRadius="@dimen/vSmall"
+        android:layout_margin="10sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <com.github.mikephil.charting.charts.CombinedChart
+                android:id="@+id/chart1"
+                android:layout_width="match_parent"
+                android:layout_height="300sp" />
+            <TextView
+                android:id="@+id/XDesc"
+                android:layout_marginTop="@dimen/standard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:paddingHorizontal="@dimen/small"
+                android:layout_alignBottom="@+id/seekBar1"
+                android:text="@string/Months"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+            <TextView
+                android:id="@+id/YDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/seekBar2"
+                android:layout_alignParentRight="true"
+                android:text="@string/Usage"
+                android:layout_marginBottom="15dp"
+                android:layout_marginHorizontal="@dimen/small"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="3"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/chartTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:paddingHorizontal="@dimen/small"
+                    android:layout_alignBottom="@+id/seekBar1"
+                    android:text="@string/LineChart"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="15dp"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/chartMenuPopUp"
+                    android:layout_weight="0"
+                    android:layout_marginHorizontal="@dimen/standard"
+                    android:layout_height="wrap_content"
+                    app:cornerRadius="@dimen/vSmall"
+                    android:src="@android:drawable/ic_menu_manage"
+                    app:tint="@color/windowsBlue" />
+
+            </LinearLayout>
+            <TextView
+                android:id="@+id/chartDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/seekBar2"
+                android:layout_alignParentRight="true"
+                android:text="@string/LineChartDesc"
+                android:layout_marginBottom="15dp"
+                android:layout_marginHorizontal="@dimen/small"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

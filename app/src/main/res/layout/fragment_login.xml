@@ -38,6 +38,7 @@
                 android:text="@string/subtitle"
                 android:textSize="@dimen/small"
                 tools:ignore="MissingConstraints"
+                android:layout_marginVertical="@dimen/standard"
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="61dp" />
 

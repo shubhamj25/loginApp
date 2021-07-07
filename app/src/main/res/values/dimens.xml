@@ -24,4 +24,5 @@
     <dimen name="margin_45sp">45sp</dimen>
     <dimen name="maxWidth_chatItem">310dp</dimen>
     <dimen name="margin_20dp">20sp</dimen>
+    <dimen name="margin_30dp">30sp</dimen>
 </resources>

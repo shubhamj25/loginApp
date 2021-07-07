@@ -17,6 +17,7 @@ import com.example.loginapp.screens.prelogin.PreLoginFragmentListener
 import com.example.loginapp.screens.prelogin.activity.PreLoginFragmentsActivity
 import com.example.loginapp.screens.prelogin.activity.PreLoginViewPagerActivity
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.android.synthetic.main.list_item.*
 import kotlinx.coroutines.Dispatchers
@@ -308,6 +309,22 @@ class RegisterFragment :Fragment(){
                                     )
                                 )
 
+                                addUserToFirebase(
+                                    FirebaseFirestore.getInstance(),
+                                    firstName.text.toString(),
+                                    lastName.text.toString(),
+                                    "",
+                                    email_register.text.toString(),
+                                    "",
+                                    phone.text.toString(),
+                                    password_register.text.toString(),
+                                    getString(
+                                        R.string.customerType_residential
+                                    )
+                                )
+
+
+
                                 activity?.showDialog(
                                     { _, _ ->
                                         startActivity(intent)
@@ -345,6 +362,19 @@ class RegisterFragment :Fragment(){
                             } else {
                                 insert(
                                     db,
+                                    "",
+                                    "",
+                                    businessName.text.toString(),
+                                    email_register.text.toString(),
+                                    cin_register.text.toString(),
+                                    phone.text.toString(),
+                                    password_register.text.toString(),
+                                    getString(
+                                        R.string.customerType_commercial
+                                    )
+                                )
+                                addUserToFirebase(
+                                    FirebaseFirestore.getInstance(),
                                     "",
                                     "",
                                     businessName.text.toString(),
@@ -399,6 +429,33 @@ class RegisterFragment :Fragment(){
                     phone = phone,
                     password = password,
                     customerType = customerType
+                )
+            )
+        }
+    }
+
+    private suspend fun addUserToFirebase(
+        db: FirebaseFirestore,
+        firstName: String,
+        lastName: String,
+        businessName: String,
+        email: String,
+        cin: String,
+        phone: String,
+        password: String,
+        customerType: String
+    ){
+        withContext(Dispatchers.IO) {
+             db.collection("users").document(email).set(
+                mapOf(
+                    "firstName" to firstName,
+                    "lastName" to lastName,
+                    "businessName" to businessName,
+                    "email" to email,
+                    "cin" to cin,
+                    "phone" to phone,
+                    "password" to password,
+                    "customerType" to customerType
                 )
             )
         }

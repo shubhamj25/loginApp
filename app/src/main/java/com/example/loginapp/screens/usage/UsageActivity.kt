@@ -15,7 +15,7 @@ class UsageActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_usage)
         title = "Usage"
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(getColor(R.color.purple_500)))
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(getColor(R.color.deepPink)))
         supportActionBar?.elevation=0f
         supportFragmentManager.commit {
             add(R.id.chartONE, CurrentUsageBarFragment())

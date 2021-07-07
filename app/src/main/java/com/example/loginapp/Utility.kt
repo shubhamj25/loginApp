@@ -20,9 +20,16 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.JsonParser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 import kotlin.math.sqrt
 
 val dToPt= LocationActivity.EQUIVALENT_TO_A_KM * 2 * sqrt(2F)
@@ -160,5 +167,27 @@ class doAsync(val handler: () -> Unit) : AsyncTask<Void, Void, Void>() {
     override fun doInBackground(vararg params: Void?): Void? {
         handler()
         return null
+    }
+}
+
+suspend fun getDailyQuote():String{
+    return withContext(Dispatchers.IO){
+        var quote=""
+        val url="https://type.fit/api/quotes"
+        val connection = URL(url).openConnection() as HttpURLConnection
+        connection.requestMethod = "GET"
+        BufferedReader(InputStreamReader(connection.inputStream, "utf-8")).use { br ->
+            val response = StringBuffer()
+            var inputLine = br.readLine()
+            while (inputLine != null) {
+                response.append(inputLine)
+                inputLine = br.readLine()
+            }
+            br.close()
+            val q=JsonParser.parseString(response.toString())
+            val jsonObject= q.asJsonArray.get((Math.random() * q.asJsonArray.size()).toInt()).asJsonObject
+            quote=jsonObject["text"].toString()+"\n- "+jsonObject["author"].toString()
+        }
+        quote
     }
 }

@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.loginapp.BaseActivity
 import com.example.loginapp.R
+import com.example.loginapp.getDailyQuote
 import com.example.loginapp.showSnackBarOnTop
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -30,7 +31,7 @@ class ChatWindowActivity : BaseActivity() {
     private lateinit var chatWith: String
     private lateinit var chatWithEmail: String
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_window)
@@ -44,11 +45,14 @@ class ChatWindowActivity : BaseActivity() {
         updateRecyclerView()
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun initUi() {
         title = chatWith
         if (messages == null) {
             loadingMessage.visibility == View.VISIBLE
+        }
+        uiScope.launch {
+            quote.text= getDailyQuote()
         }
         val outValue = TypedValue()
         theme.resolveAttribute(R.attr.themeName, outValue, true)
@@ -56,9 +60,13 @@ class ChatWindowActivity : BaseActivity() {
             chatWindowConstraintLayout.background =
                 resources.getDrawable(R.drawable.chat_light_background)
             typedMessage.setBackgroundColor(resources.getColor(R.color.whiteSmoke))
+            quote.setTextColor(Color.BLACK)
+            quote.animate().alpha(1f).setDuration(1000).start()
         } else {
             chatWindowConstraintLayout.background =
                 resources.getDrawable(R.drawable.chat_dark_background)
+            quote.setTextColor(getColor(R.color.whiteSmoke))
+            quote.animate().alpha(1f).setDuration(1000).start()
         }
         window.navigationBarColor = Color.BLACK
     }
@@ -83,7 +91,7 @@ class ChatWindowActivity : BaseActivity() {
                     sendLongMessage.animate().alpha(1f).setDuration(500).start()
                 } else {
                     send.animate().alpha(1f).setDuration(500).start()
-                    sendLongMessage.animate().alpha(0f).setDuration(500).start()
+                    //sendLongMessage.animate().alpha(0f).setDuration(500).start()
                     sendLongMessage.visibility = View.GONE
                 }
             }
@@ -234,6 +242,9 @@ class ChatWindowActivity : BaseActivity() {
                 )
                 loadingMessage.visibility = View.GONE
                 recyclerView.smoothScrollToPosition(chatMessages.size)
+                if(chatMessages.size>0){
+                    quote.animate().alpha(0f).start()
+                }
             }
         return chatMessages
     }

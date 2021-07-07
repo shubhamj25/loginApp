@@ -17,30 +17,31 @@ import com.example.loginapp.*
 import com.example.loginapp.database.LoginEntity
 import com.example.loginapp.screens.usage.UsageActivity
 import com.example.loginapp.screens.usage.fragments.CurrentUsageBarFragment
-import com.example.loginapp.screens.usage.fragments.StackBarFragment
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.activity_location.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
 class HomeActivity : BaseActivity() {
-    private lateinit var users: LiveData<MutableList<LoginEntity>>
+    private lateinit var users: MutableList<LoginEntity>
     private lateinit var manager: LocationManager
+    private lateinit var userEmail: String
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         val bundle = intent.extras
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(getColor(R.color.purple_500)))
-        supportActionBar?.elevation=0f
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(getColor(R.color.deepPink)))
+        supportActionBar?.elevation = 0f
 
-        val userEmail = bundle?.getBundle(getString(R.string.bundleKey))
+        userEmail = bundle?.getBundle(getString(R.string.bundleKey))
             ?.getString(getString(R.string.bundleArgEmail), getString(R.string.defaultUserName))
-        users = db.loginDatabaseDao.getAllUsersExcept(userEmail!!)
+            .toString()
+        //users = db.loginDatabaseDao.getAllUsersExcept(userEmail!!)
+        users = initUserList()
         userList.layoutManager = getLinearLayoutManager(application)
-        setObservers()
         setListeners()
         setWelcomeString()
         setChartFragment()
@@ -71,14 +72,6 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    private fun setObservers() {
-        users.observe(this, { newList ->
-            userList.adapter = RecyclerViewAdaptor(newList, application, this)
-            userList.visibility = View.VISIBLE
-            userList.isNestedScrollingEnabled=false
-            userListProgressBar.visibility = View.GONE
-        })
-    }
 
     private fun setWelcomeString() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -109,7 +102,8 @@ class HomeActivity : BaseActivity() {
                 userList.adapter = null
             }
             R.id.logout -> {
-                getSharedPreferenceInstance(application).edit().remove((getString(R.string.sh_email))).apply()
+                getSharedPreferenceInstance(application).edit()
+                    .remove((getString(R.string.sh_email))).apply()
                 this.finish()
             }
             R.id.viewUsage -> {
@@ -128,6 +122,33 @@ class HomeActivity : BaseActivity() {
         withContext(Dispatchers.IO) {
             db.loginDatabaseDao.clearDatabase()
         }
+    }
+
+    private fun initUserList(): MutableList<LoginEntity> {
+        val list: MutableList<LoginEntity> = arrayListOf()
+        FirebaseFirestore.getInstance().collection("users").get().addOnCompleteListener {
+            for (i in it.result.documents) {
+                if (i["email"].toString() != userEmail)
+                    list.add(
+                        LoginEntity(
+                            i["email"].hashCode().toLong(),
+                            i["businessName"].toString(),
+                            i["firstName"].toString(),
+                            i["lastName"].toString(),
+                            i["email"].toString(),
+                            i["cin"].toString(),
+                            i["phone"].toString(),
+                            i["password"].toString(),
+                            i["customerType"].toString()
+                        )
+                    )
+            }
+            userList.adapter = RecyclerViewAdaptor(list, application, this)
+            userList.visibility = View.VISIBLE
+            userList.isNestedScrollingEnabled = false
+            userListProgressBar.visibility = View.GONE
+        }
+        return list
     }
 
     override fun onDestroy() {
